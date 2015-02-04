@@ -26,27 +26,6 @@ public class DBManager {
                 }
         }
 
-        public void openConnection() {
-                try {
-
-                        stmt = c.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT * FROM UCZNIOWIE;");
-                        while (rs.next()) {
-                                String name = rs.getString("imie");
-                                String lastname = rs.getString("nazwisko");
-                                System.out.println("NAME = " + name);
-                                System.out.println("LASTNAME = " + lastname);
-                                System.out.println();
-                        }
-                        rs.close();
-                        stmt.close();
-                        //c.close();
-                } catch (Exception e) {
-                        e.printStackTrace();
-                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                        System.exit(0);
-                }
-        }
 
         public ArrayList<String> getStudentGrades(String studentID, int subjectID) {
                 ArrayList<String> grades = new ArrayList<String>();
@@ -365,7 +344,7 @@ public class DBManager {
                 DBManager dbManager = new DBManager();
                 //te funkcje sa przetestowane wiec powinny dzialac
                 //dbManager.openConnection();
-                //dbManager.getStudentGrades("96091227824",6);
+                dbManager.getStudentGrades("96091227824",6);
                 //dbManager.getStudentAbsences("96091227824","01.01.2014","12.12.2015");
                 //dbManager.getStudentNotes("96091227824","01.01.2014","12.12.2015");
                 //dbManager.getStudentSubjects("96091227824");
