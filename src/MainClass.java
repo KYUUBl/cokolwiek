@@ -72,26 +72,32 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override
         public void studentMain() {
-                System.out.println("Zalogowano jako uczeń o numerze PESEL:" + user.getId() + "\n" +
-                        "Wybierz działanie:");
-                System.out.println("[1] Wyświetl oceny");
-                System.out.println("[2] Wyświetl nieobecności");
-                System.out.println("[3] Wyświetl uwagi");
-                int order = scanner.nextInt();
+                System.out.println("Zalogowano jako uczeń o numerze PESEL:" + user.getId());
+               while(true) {
+                       System.out.println("Wybierz działanie:");
+                       System.out.println("[0] Zakończ program");
+                       System.out.println("[1] Wyświetl oceny");
+                       System.out.println("[2] Wyświetl nieobecności");
+                       System.out.println("[3] Wyświetl uwagi");
+                       int order = scanner.nextInt();
 
-                switch(order) {
-                        case 1:
-                                getStudentGrades();
-                                break;
-                        case 2:
-                                getStudentAbsences();
-                                break;
-                        case 3:
-                                getStudentNotes();
-                                break;
-                        default:
-                                throw new RuntimeException("Wrong order");
-                }
+                       switch (order) {
+                               case 1:
+                                       getStudentGrades();
+                                       break;
+                               case 2:
+                                       getStudentAbsences();
+                                       break;
+                               case 3:
+                                       getStudentNotes();
+                                       break;
+                               case 0:
+                                       System.out.println("goodbye");
+                                       return;
+                               default:
+                                       throw new RuntimeException("Wrong order");
+                       }
+               }
         }
 
         @Override
@@ -128,26 +134,32 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override
         public void getStudentGrades() {
-                ArrayList<String> subjects = new ArrayList<String>();
-                dbManager.getStudentSubjects(user.getId());
+                ArrayList<Pair<Integer,String> > subjects = new ArrayList<Pair<Integer,String> >();
+                subjects = dbManager.getStudentSubjects(user.getId());
                 for(int i = 0; i<subjects.size(); i++) {
-                        System.out.println("[" + i + "] " + subjects.get(i));
+                        System.out.println("[" + i + "] " + subjects.get(i).getY());
                 }
                 System.out.println("\n WYBIERZ PRZEDMIOT");
                 int order = scanner.nextInt();
-                String subject = subjects.get(order);
+                int subject = subjects.get(order).getX();
 
                 ArrayList<String> grades = new ArrayList<String>();
-                //dbManager.getStudentGrades(user.getId(), )
+                grades=dbManager.getStudentGrades(user.getId(),subject );
+                for(int i = 0; i<grades.size(); i++) {
+                        System.out.println(grades.get(i));
+                }
         }
 
         @Override
         public void getStudentAbsences() { //TRZEBA UODPORNIC NA ZJEBOW
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać nieobecności");
                 System.out.println("od: DD.MM.RRRR");
-                String dateFrom = scanner.nextLine();
+                String dateFrom = scanner.next();
+
                 System.out.println("do: DD.MM.RRRR");
-                String dateTo = scanner.nextLine();
+                String dateTo = scanner.next();
+                System.out.println(dateFrom);
+                System.out.println(dateTo);
                 ArrayList<String> absences = dbManager.getStudentAbsences(user.getId(), dateFrom, dateTo);
 
         }

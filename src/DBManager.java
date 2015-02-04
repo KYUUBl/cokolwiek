@@ -92,15 +92,16 @@ public class DBManager {
                 return notes;
         }
 
-        public ArrayList<String> getStudentSubjects(String studentID) {
-                ArrayList<String> subjects = new ArrayList<String>();
+        public ArrayList<Pair<Integer,String> > getStudentSubjects(String studentID) {
+                ArrayList<Pair<Integer,String> > subjects = new ArrayList<Pair<Integer,String> >();
                 try {
                         stmt = c.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT nazwa from przedmioty p join klasy k on p.id_klasy=k.id join uczniowie u on u.id_klasy=k.id where pesel='" + studentID + "';");
+                        ResultSet rs = stmt.executeQuery("SELECT p.id,nazwa from przedmioty p join klasy k on p.id_klasy=k.id join uczniowie u on u.id_klasy=k.id where pesel='" + studentID + "';");
                         while (rs.next()) {
-                                String name = rs.getString("nazwa");
-                                System.out.println(name);
-                                subjects.add(name);
+                                Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),rs.getString("nazwa"));
+
+                                System.out.println(pair.getX()+" "+pair.getY());
+                                subjects.add(pair);
                         }
                         System.out.println("success");
                         rs.close();
@@ -341,7 +342,7 @@ public class DBManager {
                 DBManager dbManager = new DBManager();
                 //te funkcje sa przetestowane wiec powinny dzialac
                 //dbManager.openConnection();
-                dbManager.getStudentGrades("96091227824",6);
+                //dbManager.getStudentGrades("96091227824",6);
                 //dbManager.getStudentAbsences("96091227824","01.01.2014","12.12.2015");
                 //dbManager.getStudentNotes("96091227824","01.01.2014","12.12.2015");
                 //dbManager.getStudentSubjects("96091227824");
@@ -364,6 +365,7 @@ public class DBManager {
                 //Pair p = dbManager.signIn("kyuu", "kyuu");
                // System.out.println(p.getX().toString() + p.getY().toString());
                 //launch(args);
+
 
         }
 }
