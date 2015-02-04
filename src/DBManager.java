@@ -310,7 +310,7 @@ public class DBManager {
                 }
         }
 
-        public Pair<String, AccountType> signIn(String login, String password) {
+        public User signIn(String login, String password) {
                 //w parze pierwszy argument to string drugi boolean
                 //i true jesli to uczen, false jesli to nauczyciel
                 //null jesli login nie istnieje lub zle haslo
@@ -320,16 +320,13 @@ public class DBManager {
                         while (rs.next()) {
                                 String pesel = rs.getString("pesel");
                                 if (!password.equals(rs.getString("haslo"))) return null;
-                                Pair<String, AccountType> pair = new Pair<String,AccountType>(pesel, AccountType.STUDENT);
-
-                                return pair;
+                                return new User(pesel, AccountType.STUDENT);
                         }
                         rs = stmt.executeQuery("SELECT * from uzytkownicy join nauczyciele on login=id_uzytkownika where login='" + login + "';");
                         while (rs.next()) {
                                 int id = rs.getInt("id");
                                 if (!password.equals(rs.getString("haslo"))) return null;
-                                Pair<String, AccountType> pair = new Pair<String,AccountType>(Integer.toString(id), AccountType.TEACHER);
-                                return pair;
+                                return new User(Integer.toString(id), AccountType.TEACHER);
                         }
                         return null;
                 } catch (Exception e) {
