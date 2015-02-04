@@ -3,7 +3,7 @@
  */
 public class Teacher implements TeacherInterface {
         @Override
-        public void TeacherMain() {
+        public void teacherMain() {
 
         }
 

@@ -4,7 +4,7 @@
 public class Student implements StudentInterface {
 
         @Override
-        public void StudentMain() {
+        public void studentMain() {
 
         }
 
