@@ -21,6 +21,8 @@ public class DBManager {
                                         "postgres", "kamil");
                         System.out.println("Opened database successfully");
                 } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 }
         }
 
@@ -363,7 +365,7 @@ public class DBManager {
                 DBManager dbManager = new DBManager();
                 //te funkcje sa przetestowane wiec powinny dzialac
                 //dbManager.openConnection();
-                //dbManager.getStudentGrades("96091227824",4);
+                //dbManager.getStudentGrades("96091227824",6);
                 //dbManager.getStudentAbsences("96091227824","01.01.2014","12.12.2015");
                 //dbManager.getStudentNotes("96091227824","01.01.2014","12.12.2015");
                 //dbManager.getStudentSubjects("96091227824");
