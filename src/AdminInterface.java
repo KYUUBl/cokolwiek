@@ -3,5 +3,10 @@
  */
 public interface AdminInterface {
 
-        public void AdminMain();
+        public void adminMain();
+        public void manageDatabase();
+        public void manageSchool();
+        public void addUserStudent();
+        public void addUserTeacher();
+
 }

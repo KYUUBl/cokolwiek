@@ -16,10 +16,6 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         private Scanner scanner = new Scanner(System.in);
         private User user;
 
-        private Admin admin;
-        private Student student;
-        private Teacher teacher;
-
         public void initApplication() {
                 String login;
                 String password;
@@ -31,6 +27,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 break;
 
                         case TEACHER:
+                                teacherMain();
                                 break;
 
                         case STUDENT:
@@ -101,9 +98,54 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         @Override
-        public void AdminMain() {
-                System.out.println("Zalogowano jako Admin");
+        public void adminMain() {
+                System.out.println("Zalogowano jako Admin \n Wybierz działanie:");
+                System.out.println("[1] Zarządzaj bazą");
+                System.out.println("[2] Zarządzaj szkołą");
+        }
 
+        @Override
+        public void manageDatabase() {
+                System.out.println("Dodaj nowego użytkownika:");
+                System.out.println("[1] Dodaj ucznia");
+                System.out.println("[2] Dodaj nauczyciela");
+
+                int order = scanner.nextInt();
+
+                switch(order) {
+                        case 1:
+                                addUserStudent();
+                                break;
+                        case 2:
+                                addUserTeacher();
+                        default:
+                                throw new RuntimeException("Wrong order in Admin Panel");
+                }
+        }
+
+        @Override
+        public void manageSchool() {
+
+        }
+
+        @Override
+        public void addUserStudent() { //TODO Dokonczyc ten shit
+                System.out.println("Podaj login");
+                String login = scanner.next();
+                System.out.println("Podaj hasło");
+                String password = scanner.next();
+                System.out.println("Wybierz ucznia");
+//                dbManager.getStudents(); //TODO Dodaj tę metodę
+        }
+
+        @Override
+        public void addUserTeacher() {
+                System.out.println("Podaj login");
+                String login = scanner.next();
+                System.out.println("Podaj hasło");
+                String password = scanner.next();
+                System.out.println("Wybierz ucznia");
+//                dbManager.getTeachers() //TODO Dodaj tę metodę
         }
 
         @Override
@@ -111,20 +153,20 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Zalogowano jako nauczyciel o ID" + user.getId() + "\n" +
                         "Wybierz działanie:");
 
-                System.out.println("[1] Wyświetl przedmioty");
-                System.out.println("[2] Wyświetl ");
-                System.out.println("[3] Wyświetl uwagi");
+                System.out.println("[1] Dodaj ocene");
+                System.out.println("[2] Dodaj uwage");
+                System.out.println("[3] Dodaj nieobecnosc");
                 int order = scanner.nextInt();
 
                 switch(order) {
                         case 1:
-                                getStudentGrades();
+                                addStudentGrade();
                                 break;
                         case 2:
-                                getStudentAbsences();
+                                addStudentNote();
                                 break;
                         case 3:
-                                getStudentNotes();
+                                addStudentAbsence();
                                 break;
                         default:
                                 throw new RuntimeException("Wrong order");
@@ -148,6 +190,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 for(int i = 0; i<grades.size(); i++) {
                         System.out.println(grades.get(i));
                 }
+
         }
 
         @Override
@@ -192,7 +235,15 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         @Override
-        public void addStudentGrade() {
+        public void addStudentGrade() { //TODO Dokonczyc ten shit
+            System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
+            ArrayList<String> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
+            for(int i = 0; i<subjects.size(); i++) {
+                System.out.println("[" + i + "] " + subjects.get(i));
+            }
+            int order = scanner.nextInt();
+
+            dbManager.getSubjectStudents()
 
         }
 
