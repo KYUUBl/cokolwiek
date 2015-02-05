@@ -521,9 +521,28 @@ public class DBManager {
                 ArrayList<Pair<String,String> > students = new ArrayList<Pair<String,String> >();
                 try {
                         stmt = c.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,pesel from uczniowie;");
+                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,pesel from uczniowie where aktywny=true;");
                         while (rs.next()) {
                                 Pair<String,String> pair = new Pair<String, String>(rs.getString("pesel"),rs.getString("imie")+" "+rs.getString("nazwisko"));
+//                                System.out.println(pair.getX()+" "+pair.getY());
+                                students.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return students;
+        }
+        public ArrayList<Pair<String,String> > getAllStudentsByAdmin() {
+                ArrayList<Pair<String,String> > students = new ArrayList<Pair<String,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT * from uczniowie where aktywny=true;");
+                        while (rs.next()) {
+                                Pair<String,String> pair = new Pair<String, String>(rs.getString("pesel"),rs.getString("pesel")+" "+rs.getString("imie")+" "+rs.getString("nazwisko")+" "+rs.getString("telefon_do_rodzica"));
 //                                System.out.println(pair.getX()+" "+pair.getY());
                                 students.add(pair);
                         }
@@ -603,7 +622,7 @@ public class DBManager {
                 }
                 return shedule;
         }
-        
+
 
         public static void main(String args[])
         {

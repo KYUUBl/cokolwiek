@@ -288,7 +288,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 studentMain();
         }
 
-        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI --chyba juz sprawdzam 
+        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI --chyba juz sprawdzam
         public void getStudentNotes() {
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać uwagi");
                 String dateFrom;
@@ -354,6 +354,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         System.out.println("[1] Zarządzaj bazą");
                         System.out.println("[2] Zarządzaj szkołą");
                         System.out.println("[3] Zmien haslo");
+                        System.out.println("[4] Zobacz wszystkich uczniow");
 
                         int order = scanner.nextInt();
 
@@ -374,12 +375,22 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 case 3:
                                         changeAdminPassword();
                                         break;
-
+                                case 4:
+                                        seeStudents();
+                                        break;
                                 default:
                                         System.out.println("Niepoprawne polecenie,\n Wybierz wartość z zakresu");
                                         break;
                         }
                 }
+        }
+
+        public void seeStudents(){
+                ArrayList<Pair<String,String>> students= dbManager.getAllStudentsByAdmin();
+                for(int i=0;i<students.size();i++){
+                        System.out.println(students.get(i).getY());
+                }
+                adminMain();
         }
 
         @Override
