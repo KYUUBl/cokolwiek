@@ -9,6 +9,18 @@ public interface AdminInterface {
         public void addUserStudent();
         public void addUserTeacher();
 
+        public void addStudent();
+
+        public void addTeacher();
+
+        public void deactivateStudent();
+
+        public void endSchoolYear();
+
+        public void addSubject();
+
         public void changeAdminPassword();
+
+        public void editXML();
 
 }

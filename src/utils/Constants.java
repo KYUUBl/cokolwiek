@@ -6,7 +6,8 @@ package utils;
 public class Constants {
 
         public static final String ADMIN_LOGIN = "admin";
-        public static String ADMIN_PASSWORD = "admin";
+        public static final String ADMIN_PASSWORD = "admin";
+        public static final String XML_PATH = "../utils/adminPassword.xml";
         public static final String ADMIN_ID = "admin";
 
         public static final String STUDENT_ABSENCES_VIEW = "../resources/fxml/StudentAbsences.fxml";

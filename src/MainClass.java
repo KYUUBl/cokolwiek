@@ -1,7 +1,14 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import utils.AccountType;
 import utils.Pair;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -47,6 +54,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         public User signIn() {
+                //editXML();
                 String login;
                 String password;
                 while(true) {
@@ -92,6 +100,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                        break;
                                case 4:
                                        changeStudentPassword();
+                                       break;
                                case 0:
                                        System.out.println("goodbye");
                                        System.exit(0);
@@ -137,7 +146,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("[0] Zakończ program");
                 System.out.println("[1] Dodaj ocene");
                 System.out.println("[2] Dodaj uwage");
-                System.out.println("[3] Dodaj nieobecnosc");
+                System.out.println("[3] Dodaj lekcje z nieobecnosciami");
                 System.out.println("[4] Zmien haslo");
                 int order = scanner.nextInt();
 
@@ -149,10 +158,10 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 addStudentNote();
                                 break;
                         case 3:
-                                addStudentAbsence();
+                                addCompletedLesson();
                                 break;
                         case 4:
-                                changeTeacherPassword();
+                                //changeTeacherPassword();
                                 break;
                         case 0:
                                 System.out.println("goodbye");
@@ -185,7 +194,36 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override
         public void manageSchool() {
+                System.out.println("Wybierz działanie:");
+                System.out.println("[0] Wycofaj do głównego menu");
+                System.out.println("[1] Dodaj ucznia");
+                System.out.println("[2] Deaktywuj ucznia");
+                System.out.println("[3] Dodaj nauczyciela");
+                System.out.println("[4] Dodaj przedmiot");
+                System.out.println("[5] Zakończ rok szkolny");
 
+                int order = scanner.nextInt();
+
+                switch (order) {
+                        case 0:
+                                adminMain();
+                                break;
+                        case 1:
+                                addStudent();
+                                break;
+                        case 2:
+                                deactivateStudent();
+                                break;
+                        case 3:
+                                addTeacher();
+                                break;
+                        case 4:
+                                addSubject();
+                                break;
+                        case 5:
+                                endSchoolYear();
+
+                }
         }
 
         @Override
@@ -229,19 +267,97 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         @Override
-        public void changeAdminPassword() { //NOT WORKING YET
+        public void addStudent() { //TODO finish this
+                System.out.print("Podaj imie: ");
+                String name = scanner.next();
+                System.out.print("Podaj nazwisko: ");
+                String lastname = scanner.next();
+                System.out.print("Podaj PESEL");
+                String pesel = scanner.next();
+                System.out.print("Podaj numer telefonu rodzica: ");
+                int phoneNumber = scanner.nextInt();
+                //dbManager.get
+        }
+
+        @Override
+        public void addTeacher() {
+                System.out.print("Podaj imie: ");
+                String name = scanner.next();
+                System.out.print("Podaj nazwisko: ");
+                String lastname = scanner.next();
+                dbManager.addTeacher(name, lastname);
+                System.out.println("Dodano nauczyciela");
+        }
+
+        @Override
+        public void deactivateStudent() {
+
+        }
+
+        @Override
+        public void addCompletedLesson() {
+                System.out.println("Podaj date przeprowadzonej lekcji: DD.MM.RRRR");
+                String data = scanner.next();
+                System.out.println("Wybierz lekcje z podzialu godzin ktora przeprowadziles");
+                ArrayList<Pair<Integer, String>> lessons = dbManager.getLessonsByDate(data);
+                for (int i = 0; i < lessons.size(); i++) {
+                        System.out.println("[" + i + "] " + lessons.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                int lessonID = lessons.get(order).getX();
+                System.out.println("Podaj temat lekcji");
+                String topic = scanner.next();
+                int lID = dbManager.addCompletedLesson(data, Integer.parseInt(user.getId()), lessonID, topic);
+                ArrayList<Pair<String, String>> students = dbManager.getStudentsByLesson(lID);
+                System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
+                for (int i = 0; i < students.size(); i++) {
+                        System.out.println("[" + i + "] " + students.get(i).getY());
+                }
+                order = scanner.nextInt();
+                while (order >= 0) {
+                        dbManager.addStudentAbsence(students.get(order).getX(), lID);
+                        order = scanner.nextInt();
+                }
+        }
+
+        @Override
+        public void endSchoolYear() {
+                int order = 0;
+                System.out.println("Czy na pewno chcesz zakonczyc rok szkolny?");
+                System.out.println("[0] NIE");
+                System.out.println("[1] TAK");
+                order = scanner.nextInt();
+                if (order == 1) {
+                        System.out.println("Zakonczono rok szkolny");
+                        dbManager.yearEnd();
+                } else {
+                        System.out.println("Powracam do zarządzania szkołą");
+                        manageSchool();
+                }
+
+
+        }
+
+        @Override
+        public void addSubject() {
+
+        }
+
+        //TODO Get this method to work, Exception is being thrown
+        @Override
+        public void changeAdminPassword() {
                 String oldPassword;
                 do {
                         System.out.print("Podaj stare hasło: ");
                         oldPassword = scanner.next();
-                } while (oldPassword.equals(ADMIN_PASSWORD));
+                } while (!oldPassword.equals(ADMIN_PASSWORD));
 
                 System.out.print("Podaj nowe hasło: ");
                 String newPassword = scanner.next();
                 try {
                         Class Constants = Class.forName("utils.Constants");
                         try {
-                                Field AdminPassword = Constants.getDeclaredField(ADMIN_PASSWORD);
+                                Field AdminPassword = Constants.getDeclaredField("ADMIN_PASSWORD"); //NoSuchFieldException
                                 AdminPassword.set(this, newPassword);
                                 System.out.println(ADMIN_PASSWORD);
                         } catch (NoSuchFieldException e) {
@@ -253,6 +369,34 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         e.printStackTrace();
                 }
 
+        }
+
+        @Override
+        public void editXML() { //TODO Implement this shit
+
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = null;
+                try {
+                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                }
+                try {
+                        InputStream fis = getClass().getResourceAsStream("adminPassword.xml");
+                        Document document = documentBuilder.parse(fis);
+                        document.setNodeValue("ala");
+
+
+                        Node password = document.getFirstChild();
+                        System.out.println("Stare: " + password.getNodeValue());
+                        password.setNodeValue("ala");
+
+                        System.out.println("Nowe:" + password.getNodeValue());
+                } catch (SAXException e) {
+                        e.printStackTrace();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
         }
 
         @Override
@@ -368,11 +512,6 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override
         public void addStudentAbsence() {
-
-        }
-
-        @Override
-        public void addCompletedLesson() {
 
         }
 
