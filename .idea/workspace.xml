@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/StudentInterface.java" line="9" />
+    <bookmark url="file://$PROJECT_DIR$/src/StudentInterface.java" line="12" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4345acad-2b70-48b9-ae92-f84a5870901c" name="Default" comment="Some shit implemented. Still lots of work to do">
-      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\Admin.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\Student.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\Teacher.class" afterPath="" />
+    <list default="true" id="4345acad-2b70-48b9-ae92-f84a5870901c" name="Default" comment="Some shit implemented. Not that much work left">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/AdminInterface.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/AdminInterface.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/utils/Constants.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/utils/Constants.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/DBManager.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/DBManager.class" />
@@ -16,12 +13,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/StudentInterface.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/StudentInterface.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/TeacherInterface.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/TeacherInterface.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/User.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AdminInterface.java" afterPath="$PROJECT_DIR$/src/AdminInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/Constants.java" afterPath="$PROJECT_DIR$/src/utils/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainClass.java" afterPath="$PROJECT_DIR$/src/MainClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/StudentInterface.java" afterPath="$PROJECT_DIR$/src/StudentInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TeacherInterface.java" afterPath="$PROJECT_DIR$/src/TeacherInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/User.java" afterPath="$PROJECT_DIR$/src/User.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cokolwiek.iws" />
@@ -76,7 +67,7 @@
           <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/User.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="629">
+                <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="697">
                   <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
                   <folding />
                 </state>
@@ -106,7 +97,7 @@
           <file leaf-file-name="StudentInterface.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/StudentInterface.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="272">
+                <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="340">
                   <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
                   <folding />
                 </state>
@@ -120,8 +111,8 @@
           <file leaf-file-name="StudentInterface.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/StudentInterface.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="272">
-                  <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="340">
+                  <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -130,8 +121,8 @@
           <file leaf-file-name="AdminInterface.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/AdminInterface.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.1620591" vertical-offset="0" max-vertical-offset="1049">
-                  <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
+                <state vertical-scroll-proportion="0.17826502" vertical-offset="0" max-vertical-offset="1049">
+                  <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
                   <folding />
                 </state>
               </provider>
@@ -140,8 +131,8 @@
           <file leaf-file-name="TeacherInterface.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/TeacherInterface.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="340">
-                  <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="357">
+                  <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
                   <folding />
                 </state>
               </provider>
@@ -164,11 +155,11 @@
         <option value="$PROJECT_DIR$/src/Teacher.java" />
         <option value="$PROJECT_DIR$/src/StudentInterface.java" />
         <option value="$PROJECT_DIR$/src/TeacherInterface.java" />
-        <option value="$PROJECT_DIR$/src/AdminInterface.java" />
         <option value="$PROJECT_DIR$/src/User.java" />
         <option value="$PROJECT_DIR$/src/DBManager.java" />
         <option value="$PROJECT_DIR$/src/utils/Constants.java" />
         <option value="$PROJECT_DIR$/src/MainClass.java" />
+        <option value="$PROJECT_DIR$/src/AdminInterface.java" />
       </list>
     </option>
   </component>
@@ -508,7 +499,13 @@
       <option name="project" value="LOCAL" />
       <updated>1423103070311</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Some shit implemented. Not that much work left">
+      <created>1423137014773</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1423137014773</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -518,6 +515,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286908" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -536,7 +534,6 @@
       <window_info id="Floobits Chat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286908" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.45625" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="0" y="213" width="1920" height="369" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -559,7 +556,8 @@
     </option>
     <MESSAGE value="Little changes" />
     <MESSAGE value="Some shit implemented. Still lots of work to do" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some shit implemented. Still lots of work to do" />
+    <MESSAGE value="Some shit implemented. Not that much work left" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some shit implemented. Not that much work left" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -801,24 +799,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TeacherInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
-          <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="357">
+          <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AdminInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1620591" vertical-offset="0" max-vertical-offset="1049">
-          <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.17826502" vertical-offset="0" max-vertical-offset="1049">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/StudentInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="272">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="340">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
