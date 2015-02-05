@@ -8,7 +8,6 @@ public interface TeacherInterface {
         public void getSubjectStudents();
         public void addStudentGrade();
         public void addStudentNote();
-        public void addStudentAbsence();
         public void addCompletedLesson();
 
         public void changeTeacherPassword();

@@ -120,6 +120,44 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 return true;
         }
 
+        public boolean checkOrderValidity(int from, int to, int order) {
+                if (order >= from && order <= to) {
+                        return true;
+                }
+                return false;
+        }
+
+        @Override
+        public void editXML() { //TODO Implement this shit
+
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = null;
+                try {
+                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                }
+                try {
+                        InputStream fis = getClass().getResourceAsStream("adminPassword.xml");
+                        Document document = documentBuilder.parse(fis);
+                        document.setNodeValue("ala");
+
+
+                        Node password = document.getFirstChild();
+                        System.out.println("Stare: " + password.getNodeValue());
+                        password.setNodeValue("ala");
+
+                        System.out.println("Nowe:" + password.getNodeValue());
+                } catch (SAXException e) {
+                        e.printStackTrace();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
+
+
+// ------------------------------------STUDENT VIEW METHODS ------------------------------------ \\
+
         @Override
         public void studentMain() {
                 System.out.println("Zalogowano jako uczeń o numerze PESEL:" + user.getId());
@@ -159,123 +197,30 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                         //logout(user.getAccountType());
                                         break;
                                 default:
-                                        throw new RuntimeException("Wrong order");
+                                        System.out.println("Niepoprawne polecenie,\nWybierz wartość z zakresu");
+                                        break;
                         }
                 }
         }
 
         @Override
-        public void adminMain() {
-                System.out.println("Zalogowano jako Admin \n Wybierz działanie:");
-                System.out.println("[-1] Wyloguj");
-                System.out.println("[0] Zakończ program");
-                System.out.println("[1] Zarządzaj bazą");
-                System.out.println("[2] Zarządzaj szkołą");
-                System.out.println("[3] Zmien haslo");
-
-                int order = scanner.nextInt();
-
-                switch (order) {
-                        case 1:
-                                manageDatabase();
-                                break;
-                        case 2:
-                                manageSchool();
-                                break;
-                        case 3:
-                                changeAdminPassword();
-                                break;
-                        case 0:
-                                System.out.println("goodbye");
-                                System.exit(0);
-                                break;
-                        case -1:
-                                //logout(user.getAccountType());
-                                break;
-                        default:
-                                throw new RuntimeException("Wrong order");
-                }
-        }
-
-        @Override
-        public void teacherMain() {
-                System.out.println("Zalogowano jako nauczyciel o ID" + user.getId() + "\n" +
-                        "Wybierz działanie:");
-                System.out.println("[-1] Wyloguj");
-                System.out.println("[0] Zakończ program");
-                System.out.println("[1] Dodaj ocene");
-                System.out.println("[2] Dodaj uwage");
-                System.out.println("[3] Dodaj lekcje z nieobecnosciami");
-                System.out.println("[4] Zmien haslo");
-                int order = scanner.nextInt();
-
-                switch (order) {
-                        case 1:
-                                addStudentGrade();
-                                break;
-                        case 2:
-                                addStudentNote();
-                                break;
-                        case 3:
-                                addCompletedLesson();
-                                break;
-                        case 4:
-                                //changeTeacherPassword();
-                                break;
-                        case 0:
-                                System.out.println("goodbye");
-                                System.exit(0);
-                                break;
-                        case -1:
-                                //logout(user.getAccountType());
-                                break;
-
-                        default:
-                                throw new RuntimeException("Wrong order");
-                }
-
-        }
-
-        @Override
-        public void editXML() { //TODO Implement this shit
-
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = null;
-                try {
-                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
-                }
-                try {
-                        InputStream fis = getClass().getResourceAsStream("adminPassword.xml");
-                        Document document = documentBuilder.parse(fis);
-                        document.setNodeValue("ala");
-
-
-                        Node password = document.getFirstChild();
-                        System.out.println("Stare: " + password.getNodeValue());
-                        password.setNodeValue("ala");
-
-                        System.out.println("Nowe:" + password.getNodeValue());
-                } catch (SAXException e) {
-                        e.printStackTrace();
-                } catch (IOException e) {
-                        e.printStackTrace();
-                }
-        }
-
-
-// ------------------------------------STUDENT VIEW METHODS ------------------------------------ \\
-
-        @Override
         public void getStudentGrades() {
                 ArrayList<Pair<Integer, String>> subjects = new ArrayList<Pair<Integer, String>>();
                 subjects = dbManager.getStudentSubjects(user.getId());
-                for (int i = 0; i < subjects.size(); i++) {
-                        System.out.println("[" + i + "] " + subjects.get(i).getY());
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < subjects.size(); i++) {
+                                System.out.println("[" + i + "] " + subjects.get(i).getY());
+                        }
+                        System.out.println("\n WYBIERZ PRZEDMIOT");
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(0, subjects.size() - 1, order);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
                 }
-                System.out.println("\n WYBIERZ PRZEDMIOT");
-                int order = scanner.nextInt();
+                assert (order != -1); //DODAM SOBIE ASSERTA
                 int subject = subjects.get(order).getX();
 
                 ArrayList<String> grades = new ArrayList<String>();
@@ -297,8 +242,8 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 studentMain();
         }
 
-        @Override
-        public void getStudentAbsences() { //TRZEBA UODPORNIC NA ZJEBOW
+        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI
+        public void getStudentAbsences() {
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać nieobecności");
                 System.out.println("od: DD.MM.RRRR");
                 String dateFrom = scanner.next();
@@ -312,7 +257,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 studentMain();
         }
 
-        @Override
+        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI
         public void getStudentNotes() {
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać uwagi");
                 System.out.println("od: DD.MM.RRRR");
@@ -360,55 +305,102 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 // ------------------------------------ ADMIN VIEW METHODS ------------------------------------ \\
 
         @Override
+        public void adminMain() {
+                while (true) {
+                        System.out.println("Zalogowano jako Admin \n Wybierz działanie:");
+                        System.out.println("[-1] Wyloguj");
+                        System.out.println("[0] Zakończ program");
+                        System.out.println("[1] Zarządzaj bazą");
+                        System.out.println("[2] Zarządzaj szkołą");
+                        System.out.println("[3] Zmien haslo");
+
+                        int order = scanner.nextInt();
+
+                        switch (order) {
+                                case -1:
+                                        //logout(user.getAccountType());
+                                        break;
+                                case 0:
+                                        System.out.println("goodbye");
+                                        System.exit(0);
+                                        break;
+                                case 1:
+                                        manageDatabase();
+                                        break;
+                                case 2:
+                                        manageSchool();
+                                        break;
+                                case 3:
+                                        changeAdminPassword();
+                                        break;
+
+                                default:
+                                        System.out.println("Niepoprawne polecenie,\n Wybierz wartość z zakresu");
+                                        break;
+                        }
+                }
+        }
+
+        @Override
         public void manageDatabase() {
-                System.out.println("Dodaj nowego użytkownika:");
-                System.out.println("[1] Dodaj ucznia");
-                System.out.println("[2] Dodaj nauczyciela");
+                while (true) {
+                        System.out.println("Dodaj nowego użytkownika:");
+                        System.out.println("[1] Dodaj ucznia");
+                        System.out.println("[2] Dodaj nauczyciela");
 
-                int order = scanner.nextInt();
+                        int order = scanner.nextInt();
 
-                switch (order) {
-                        case 1:
-                                addUserStudent();
-                                break;
-                        case 2:
-                                addUserTeacher();
-                        default:
-                                throw new RuntimeException("Wrong order in Admin Panel");
+                        switch (order) {
+                                case 1:
+                                        addUserStudent();
+                                        break;
+                                case 2:
+                                        addUserTeacher();
+                                        break;
+                                default:
+                                        System.out.println("Niepoprawne polecenie,\n Wybierz wartość z zakresu");
+                                        break;
+                        }
                 }
         }
 
         @Override
         public void manageSchool() {
-                System.out.println("Wybierz działanie:");
-                System.out.println("[0] Wycofaj do głównego menu");
-                System.out.println("[1] Dodaj ucznia");
-                System.out.println("[2] Deaktywuj ucznia");
-                System.out.println("[3] Dodaj nauczyciela");
-                System.out.println("[4] Dodaj przedmiot");
-                System.out.println("[5] Zakończ rok szkolny");
+                while (true) {
+                        System.out.println("Wybierz działanie:");
+                        System.out.println("[0] Wycofaj do głównego menu");
+                        System.out.println("[1] Dodaj ucznia");
+                        System.out.println("[2] Deaktywuj ucznia");
+                        System.out.println("[3] Dodaj nauczyciela");
+                        System.out.println("[4] Dodaj przedmiot");
+                        System.out.println("[5] Zakończ rok szkolny");
 
-                int order = scanner.nextInt();
+                        int order = scanner.nextInt();
 
-                switch (order) {
-                        case 0:
-                                adminMain();
-                                break;
-                        case 1:
-                                addStudent();
-                                break;
-                        case 2:
-                                deactivateStudent();
-                                break;
-                        case 3:
-                                addTeacher();
-                                break;
-                        case 4:
-                                addSubject();
-                                break;
-                        case 5:
-                                endSchoolYear();
+                        switch (order) {
+                                case 0:
+                                        adminMain();
+                                        break;
+                                case 1:
+                                        addStudent();
+                                        break;
+                                case 2:
+                                        deactivateStudent();
+                                        break;
+                                case 3:
+                                        addTeacher();
+                                        break;
+                                case 4:
+                                        addSubject();
+                                        break;
+                                case 5:
+                                        endSchoolYear();
+                                        break;
+                                default:
+                                        System.out.println("Niepoprawne polecenie,\n Wybierz wartość z zakresu");
+                                        break;
 
+                        }
                 }
         }
 
@@ -419,11 +411,20 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Podaj hasło: ");
                 String password = scanner.next();
                 System.out.println("Wybierz ucznia");
+
+                boolean isOrderCorrect = false;
+                int order = -1;
                 ArrayList<Pair<String, String>> students = dbManager.getStudentsWithoutUser();
-                for (int i = 0; i < students.size(); i++) {
-                        System.out.println("[" + i + "] " + students.get(i).getY());
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < students.size(); i++) {
+                                System.out.println("[" + i + "] " + students.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, students.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
                 }
-                int order = scanner.nextInt();
                 String studentId = students.get(order).getX();
                 dbManager.addStudentUser(login, password, studentId);
                 System.out.println("Dodano użytkownika:");
@@ -440,17 +441,26 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Podaj hasło: ");
                 String password = scanner.next();
                 System.out.println("Wybierz nauczyciela");
-                ArrayList<Pair<Integer, String>> students = dbManager.getTeachersWithoutUser();
-                for (int i = 0; i < students.size(); i++) {
-                        System.out.println("[" + i + "] " + students.get(i).getY());
+
+                boolean isOrderCorrect = false;
+                int order = -1;
+                ArrayList<Pair<Integer, String>> teachers = dbManager.getTeachersWithoutUser();
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < teachers.size(); i++) {
+                                System.out.println("[" + i + "] " + teachers.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, teachers.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
                 }
-                int order = scanner.nextInt();
-                Integer teacherId = students.get(order).getX();
-                dbManager.addStudentUser(login, password, teacherId.toString());
+                Integer teacherId = teachers.get(order).getX();
+                dbManager.addTeacherUser(login, password, teacherId);
                 System.out.println("Dodano użytkownika:");
                 System.out.println("login: " + login);
                 System.out.println("haslo: " + password);
-                System.out.println("Dla nauczyciela: " + students.get(order).getY());
+                System.out.println("Dla nauczyciela: " + teachers.get(order).getY());
                 manageDatabase();
         }
 
@@ -464,17 +474,48 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String pesel = scanner.next();
                 System.out.print("Podaj numer telefonu rodzica: ");
                 int phoneNumber = scanner.nextInt();
+
                 ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
                 System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
-                for (int i = 0; i < classes.size(); i++) {
-                        System.out.println("[" + i + "] " + classes.get(i).getY());
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < classes.size(); i++) {
+                                System.out.println("[" + i + "] " + classes.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, classes.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
                 }
-                int order = scanner.nextInt();
                 int classID = classes.get(order).getX();
                 dbManager.addStudent(name, lastname, pesel, phoneNumber, classID);
                 System.out.println("Pomyslnie dodano ucznia");
                 manageSchool();
 
+        }
+
+        @Override
+        public void deactivateStudent() {
+                System.out.println("Wybierz ucznia, którech chcesz deaktywować");
+                ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < students.size(); i++) {
+                                System.out.println("[" + i + "] " + students.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, students.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
+                }
+                String userID = students.get(order).getX();
+                dbManager.deactivateStudent(userID);
+                System.out.println("Pomyślnie deaktywowano studenta");
+                manageSchool();
         }
 
         @Override
@@ -485,20 +526,6 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String lastname = scanner.next();
                 dbManager.addTeacher(name, lastname);
                 System.out.println("Dodano nauczyciela. \n");
-                manageSchool();
-        }
-
-        @Override
-        public void deactivateStudent() {
-                System.out.println("Wybierz ucznia, którech chcesz deaktywować");
-                ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
-                for (int i = 0; i < students.size(); i++) {
-                        System.out.println("[" + i + "] " + students.get(i).getY());
-                }
-                int order = scanner.nextInt();
-                String userID = students.get(order).getX();
-                dbManager.deactivateStudent(userID);
-                System.out.println("Pomyślnie deaktywowano studenta");
                 manageSchool();
         }
 
@@ -552,20 +579,38 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 System.out.println("Wybierz klasę:");
                 ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
-                System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
-                for (int i = 0; i < classes.size(); i++) {
-                        System.out.println("[" + i + "] " + classes.get(i).getY());
+
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
+                        for (int i = 0; i < classes.size(); i++) {
+                                System.out.println("[" + i + "] " + classes.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, classes.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
                 }
-                int orderClass = scanner.nextInt();
-                int classID = classes.get(orderClass).getX();
+                int classID = classes.get(order).getX();
 
                 System.out.println("Wybierz nauczyciela przypisanego do przedmiotu");
+
+                isOrderCorrect = false;
+                order = -1;
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getAllTeachers();
-                for (int i = 0; i < teachers.size(); i++) {
-                        System.out.println("[" + i + "] " + teachers.get(i).getY());
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < teachers.size(); i++) {
+                                System.out.println("[" + i + "] " + teachers.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, classes.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
                 }
-                int orderTeacher = scanner.nextInt();
-                int teacherID = classes.get(orderTeacher).getX();
+                int teacherID = classes.get(order).getX();
 
                 dbManager.addSubject(name, classID, teacherID);
                 System.out.println("Pomyślnie dodano przedmiot");
@@ -573,9 +618,102 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
 
-
 // ------------------------------------ END ------------------------------------ \\
 // ------------------------------------ TEACHER VIEW METHODS ------------------------------------ \\
+
+        @Override
+        public void teacherMain() {
+                while (true) {
+                        System.out.println("Zalogowano jako nauczyciel o ID" + user.getId() + "\n" +
+                                "Wybierz działanie:");
+                        System.out.println("[-1] Wyloguj");
+                        System.out.println("[0] Zakończ program");
+                        System.out.println("[1] Dodaj ocene");
+                        System.out.println("[2] Dodaj uwage");
+                        System.out.println("[3] Dodaj lekcje z nieobecnosciami");
+                        System.out.println("[4] Wyświetl swoje przemioty");
+                        int order = scanner.nextInt();
+
+                        switch (order) {
+                                case 1:
+                                        addStudentGrade();
+                                        break;
+                                case 2:
+                                        addStudentNote();
+                                        break;
+                                case 3:
+                                        addCompletedLesson();
+                                        break;
+                                case 4:
+                                        //getTeacherSubject();
+                                        break;
+                                case 0:
+                                        System.out.println("goodbye");
+                                        System.exit(0);
+                                        break;
+                                case -1:
+                                        //logout(user.getAccountType());
+                                        break;
+
+                                default:
+                                        System.out.println("Niepoprawne polecenie,\n Wybierz wartość z zakresu");
+                                        break;
+                        }
+                }
+        }
+
+        @Override //TODO NOT YET IMPLEMENTED
+        public void addStudentGrade() {
+                System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
+                ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < subjects.size(); i++) {
+                                System.out.println("[" + i + "] " + subjects.get(i).getY());
+                        }
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(order, 0, subjects.size() - 1);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
+                }
+                int subjectId = subjects.get(order).getX();
+//TODO Tutaj trzeba dokończyć
+                ArrayList<Pair<String, String>> studentsBySubject = dbManager.getSubjectStudents(subjectId);
+                for (int i = 0; i < studentsBySubject.size(); i++) {
+                        System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
+                }
+                //int
+        }
+
+        //--------------------------------------------------------------------------------------------------------------------=======================TUTAJ SKONCZYLEM NAPRAWIAC!!!!
+        @Override //TODO NOT TESTED
+        public void addStudentNote() {
+
+                System.out.println("Wybierz ucznia, któremu chcesz wystawić uwagę");
+                ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
+                for (int i = 0; i < students.size(); i++) {
+                        System.out.println("[" + i + "] " + students.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                String studentID = students.get(order).getX();
+
+                System.out.println("Podaj treść uwagi i zatwierdź ENTEREM:");
+                String note = scanner.nextLine(); //TODO CZY NA PEWNO NEXTLINE?
+
+                System.out.println("Czy uwaga jest pozytywna? ");
+                System.out.println("[1] TAK");
+                System.out.println("[0] NIE");
+                int orderForPositive = scanner.nextInt(); //TUTAJ UWAGA Z BOOLEANEM
+                boolean isPositive = orderForPositive == 1 ? true : false;
+                System.out.println("Podaj datę wystawienia");
+                String date = scanner.next();
+
+                dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date);
+                System.out.println("Dodano uwagę");
+                teacherMain();
+        }
 
         @Override
         public void addCompletedLesson() {
@@ -611,58 +749,6 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override //TODO NOT YET IMPLEMENTED
         public void getSubjectStudents() {
-
-        }
-
-        @Override //TODO NOT YET IMPLEMENTED
-        public void addStudentGrade() {
-                System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
-                ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
-                for (int i = 0; i < subjects.size(); i++) {
-                        System.out.println("[" + i + "] " + subjects.get(i).getY());
-                }
-                int order = scanner.nextInt();
-                int subjectId = subjects.get(order).getX();
-
-                ArrayList<Pair<String, String>> studentsBySubject = dbManager.getSubjectStudents(subjectId);
-                for (int i = 0; i < studentsBySubject.size(); i++) {
-                        System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
-                }
-                //int
-
-
-        }
-
-        @Override //TODO NOT TESTED
-        public void addStudentNote() {
-
-                System.out.println("Wybierz ucznia, któremu chcesz wystawić uwagę");
-                ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
-                for (int i = 0; i < students.size(); i++) {
-                        System.out.println("[" + i + "] " + students.get(i).getY());
-                }
-                int order = scanner.nextInt();
-                String studentID = students.get(order).getX();
-
-                System.out.println("Podaj treść uwagi i zatwierdź ENTEREM:");
-                String note = scanner.nextLine(); //TODO CZY NA PEWNO NEXTLINE?
-
-                System.out.println("Czy uwaga jest pozytywna? ");
-                System.out.println("[1] TAK");
-                System.out.println("[0] NIE");
-                int orderForPositive = scanner.nextInt(); //TUTAJ UWAGA Z BOOLEANEM
-                boolean isPositive = orderForPositive == 1 ? true : false;
-                System.out.println("Podaj datę wystawienia");
-                String date = scanner.next();
-
-                dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date);
-                System.out.println("Dodano uwagę");
-                teacherMain();
-        }
-
-        @Override //TODO NOT YET IMPLEMENTED
-        public void addStudentAbsence() {
-                System.out.println("Wybierz ucznia");
         }
 
         @Override
