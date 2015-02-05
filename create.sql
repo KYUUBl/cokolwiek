@@ -660,7 +660,14 @@ INSERT INTO uczniowie (imie, nazwisko, telefon_do_rodzica, pesel, id_klasy,aktyw
 
  (6, 1, 6),
  (6, 2, 6),
- (28, 3, 6);
+ (28, 3, 6),
+
+ --klasaKamilaxd
+ (33,0,2),
+ (39,4,3),
+ (5,5,3),
+ (5,6,3),
+ (11,4,5);
 
  INSERT INTO przeprowadzone_lekcje(data, temat_zajec, id_prowadzacego, id_lekcji) VALUES
  ('2014-12-15'::date, 'xfgu hjutyfdwqdfv', 1, 1),
