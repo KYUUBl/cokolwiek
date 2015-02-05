@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4345acad-2b70-48b9-ae92-f84a5870901c" name="Default" comment="Even more methods implemented">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/DBManager.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/DBManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/MainClass$1.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/MainClass$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/MainClass.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/MainClass.class" />
+    <list default="true" id="4345acad-2b70-48b9-ae92-f84a5870901c" name="Default" comment="Again and again for fuck's sake">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/TeacherInterface.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/TeacherInterface.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainClass.java" afterPath="$PROJECT_DIR$/src/MainClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TeacherInterface.java" afterPath="$PROJECT_DIR$/src/TeacherInterface.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cokolwiek.iws" />
@@ -35,8 +32,8 @@
       <file leaf-file-name="MainClass.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19895288" vertical-offset="4948" max-vertical-offset="6783">
-              <caret line="688" column="167" selection-start-line="688" selection-start-column="167" selection-end-line="688" selection-end-column="167" />
+            <state vertical-scroll-proportion="-0.93586385" vertical-offset="3996" max-vertical-offset="5474">
+              <caret line="557" column="45" selection-start-line="557" selection-start-column="45" selection-end-line="557" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#main#0;class#MainClass#0" expanded="false" />
@@ -45,8 +42,8 @@
                 <element signature="method#logout#0;class#MainClass#0" expanded="false" />
                 <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
                 <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-                <element signature="e#8468#8491#0" expanded="true" />
-                <element signature="e#9422#9430#0" expanded="true" />
+                <element signature="e#10043#10066#0" expanded="true" />
+                <element signature="e#10371#10379#0" expanded="true" />
                 <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
                 <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
                 <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -54,7 +51,9 @@
                 <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
                 <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
                 <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+                <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
                 <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+                <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
                 <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
                 <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
                 <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
@@ -729,7 +728,13 @@
       <option name="project" value="LOCAL" />
       <updated>1423151661800</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Again and again for fuck's sake">
+      <created>1423158290452</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1423158290452</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -811,13 +816,14 @@
     <MESSAGE value="Admin password parsing not finished" />
     <MESSAGE value="A Few methods implemented. Code reformatted." />
     <MESSAGE value="Even more methods implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="Even more methods implemented" />
+    <MESSAGE value="Again and again for fuck's sake" />
+    <option name="LAST_COMMIT_MESSAGE" value="Again and again for fuck's sake" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -838,8 +844,8 @@
             <element signature="method#logout#0;class#MainClass#0" expanded="false" />
             <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
             <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-            <element signature="e#8468#8491#0" expanded="true" />
-            <element signature="e#9422#9430#0" expanded="true" />
+            <element signature="e#10043#10066#0" expanded="true" />
+            <element signature="e#10371#10379#0" expanded="true" />
             <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -847,7 +853,9 @@
             <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
@@ -982,8 +990,8 @@
             <element signature="method#logout#0;class#MainClass#0" expanded="false" />
             <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
             <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-            <element signature="e#8468#8491#0" expanded="true" />
-            <element signature="e#9422#9430#0" expanded="true" />
+            <element signature="e#10043#10066#0" expanded="true" />
+            <element signature="e#10371#10379#0" expanded="true" />
             <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -991,7 +999,9 @@
             <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
@@ -1065,8 +1075,8 @@
             <element signature="method#logout#0;class#MainClass#0" expanded="false" />
             <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
             <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-            <element signature="e#8468#8491#0" expanded="true" />
-            <element signature="e#9422#9430#0" expanded="true" />
+            <element signature="e#10043#10066#0" expanded="true" />
+            <element signature="e#10371#10379#0" expanded="true" />
             <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -1074,7 +1084,9 @@
             <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
@@ -1148,8 +1160,8 @@
             <element signature="method#logout#0;class#MainClass#0" expanded="false" />
             <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
             <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-            <element signature="e#8468#8491#0" expanded="true" />
-            <element signature="e#9422#9430#0" expanded="true" />
+            <element signature="e#10043#10066#0" expanded="true" />
+            <element signature="e#10371#10379#0" expanded="true" />
             <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -1157,7 +1169,9 @@
             <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
@@ -1215,8 +1229,8 @@
             <element signature="method#logout#0;class#MainClass#0" expanded="false" />
             <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
             <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-            <element signature="e#8468#8491#0" expanded="true" />
-            <element signature="e#9422#9430#0" expanded="true" />
+            <element signature="e#10043#10066#0" expanded="true" />
+            <element signature="e#10371#10379#0" expanded="true" />
             <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -1224,7 +1238,9 @@
             <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
@@ -1431,8 +1447,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19895288" vertical-offset="4948" max-vertical-offset="6783">
-          <caret line="688" column="167" selection-start-line="688" selection-start-column="167" selection-end-line="688" selection-end-column="167" />
+        <state vertical-scroll-proportion="-0.93586385" vertical-offset="3996" max-vertical-offset="5474">
+          <caret line="557" column="45" selection-start-line="557" selection-start-column="45" selection-end-line="557" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#MainClass#0" expanded="false" />
@@ -1441,8 +1457,8 @@
             <element signature="method#logout#0;class#MainClass#0" expanded="false" />
             <element signature="method#checkDate#0;class#MainClass#0" expanded="false" />
             <element signature="method#editXML#0;class#MainClass#0" expanded="false" />
-            <element signature="e#8468#8491#0" expanded="true" />
-            <element signature="e#9422#9430#0" expanded="true" />
+            <element signature="e#10043#10066#0" expanded="true" />
+            <element signature="e#10371#10379#0" expanded="true" />
             <element signature="method#getStudentSchedule#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentAbsences#0;class#MainClass#0" expanded="false" />
             <element signature="method#getStudentNotes#0;class#MainClass#0" expanded="false" />
@@ -1450,7 +1466,9 @@
             <element signature="method#adminMain#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageDatabase#0;class#MainClass#0" expanded="false" />
             <element signature="method#manageSchool#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addUserStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addUserTeacher#0;class#MainClass#0" expanded="false" />
+            <element signature="method#addStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#deactivateStudent#0;class#MainClass#0" expanded="false" />
             <element signature="method#addTeacher#0;class#MainClass#0" expanded="false" />
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />

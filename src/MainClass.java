@@ -155,6 +155,40 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 }
         }
 
+        public int orderFromList(ArrayList<Pair<Integer, String>> data) {
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < data.size(); i++) {
+                                System.out.println("[" + i + "] " + data.get(i).getY());
+                        }
+                        System.out.println("\n WYBIERZ PRZEDMIOT");
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(0, data.size() - 1, order);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
+                }
+                return order;
+        }
+
+        public int orderFromList1(ArrayList<Pair<String, String>> data) {
+                boolean isOrderCorrect = false;
+                int order = -1;
+                while (!isOrderCorrect) {
+                        for (int i = 0; i < data.size(); i++) {
+                                System.out.println("[" + i + "] " + data.get(i).getY());
+                        }
+                        System.out.println("\n WYBIERZ PRZEDMIOT");
+                        order = scanner.nextInt();
+                        isOrderCorrect = checkOrderValidity(0, data.size() - 1, order);
+                        if (!isOrderCorrect) {
+                                System.out.println("Niepoprawny wybór");
+                        }
+                }
+                return order;
+        }
+
 
 // ------------------------------------STUDENT VIEW METHODS ------------------------------------ \\
 
@@ -207,20 +241,8 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void getStudentGrades() {
                 ArrayList<Pair<Integer, String>> subjects = new ArrayList<Pair<Integer, String>>();
                 subjects = dbManager.getStudentSubjects(user.getId());
-                boolean isOrderCorrect = false;
-                int order = -1;
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < subjects.size(); i++) {
-                                System.out.println("[" + i + "] " + subjects.get(i).getY());
-                        }
-                        System.out.println("\n WYBIERZ PRZEDMIOT");
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(0, subjects.size() - 1, order);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
-                assert (order != -1); //DODAM SOBIE ASSERTA
+                int order = orderFromList(subjects);
+                assert (order != -1); //DODAM SOBIE ASSERTA*/
                 int subject = subjects.get(order).getX();
 
                 ArrayList<String> grades = new ArrayList<String>();
@@ -412,19 +434,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String password = scanner.next();
                 System.out.println("Wybierz ucznia");
 
-                boolean isOrderCorrect = false;
-                int order = -1;
+
                 ArrayList<Pair<String, String>> students = dbManager.getStudentsWithoutUser();
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < students.size(); i++) {
-                                System.out.println("[" + i + "] " + students.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, students.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                int order = orderFromList1(students);
                 String studentId = students.get(order).getX();
                 dbManager.addStudentUser(login, password, studentId);
                 System.out.println("Dodano użytkownika:");
@@ -442,19 +454,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String password = scanner.next();
                 System.out.println("Wybierz nauczyciela");
 
-                boolean isOrderCorrect = false;
-                int order = -1;
+
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getTeachersWithoutUser();
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < teachers.size(); i++) {
-                                System.out.println("[" + i + "] " + teachers.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, teachers.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                int order = orderFromList(teachers);
                 Integer teacherId = teachers.get(order).getX();
                 dbManager.addTeacherUser(login, password, teacherId);
                 System.out.println("Dodano użytkownika:");
@@ -477,18 +479,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
                 System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
-                boolean isOrderCorrect = false;
-                int order = -1;
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < classes.size(); i++) {
-                                System.out.println("[" + i + "] " + classes.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, classes.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                int order = orderFromList(classes);
                 int classID = classes.get(order).getX();
                 dbManager.addStudent(name, lastname, pesel, phoneNumber, classID);
                 System.out.println("Pomyslnie dodano ucznia");
@@ -500,18 +491,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void deactivateStudent() {
                 System.out.println("Wybierz ucznia, którech chcesz deaktywować");
                 ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
-                boolean isOrderCorrect = false;
-                int order = -1;
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < students.size(); i++) {
-                                System.out.println("[" + i + "] " + students.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, students.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                int order = orderFromList1(students);
                 String userID = students.get(order).getX();
                 dbManager.deactivateStudent(userID);
                 System.out.println("Pomyślnie deaktywowano studenta");
@@ -579,37 +559,14 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 System.out.println("Wybierz klasę:");
                 ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
-
-                boolean isOrderCorrect = false;
-                int order = -1;
-                while (!isOrderCorrect) {
-                        System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
-                        for (int i = 0; i < classes.size(); i++) {
-                                System.out.println("[" + i + "] " + classes.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, classes.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                int order = orderFromList(classes);
                 int classID = classes.get(order).getX();
 
                 System.out.println("Wybierz nauczyciela przypisanego do przedmiotu");
 
-                isOrderCorrect = false;
-                order = -1;
+
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getAllTeachers();
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < teachers.size(); i++) {
-                                System.out.println("[" + i + "] " + teachers.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, classes.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                order = orderFromList(teachers);
                 int teacherID = classes.get(order).getX();
 
                 dbManager.addSubject(name, classID, teacherID);
@@ -666,25 +623,13 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void addStudentGrade() {
                 System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
                 ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
-                boolean isOrderCorrect = false;
-                int order = -1;
-                while (!isOrderCorrect) {
-                        for (int i = 0; i < subjects.size(); i++) {
-                                System.out.println("[" + i + "] " + subjects.get(i).getY());
-                        }
-                        order = scanner.nextInt();
-                        isOrderCorrect = checkOrderValidity(order, 0, subjects.size() - 1);
-                        if (!isOrderCorrect) {
-                                System.out.println("Niepoprawny wybór");
-                        }
-                }
+                int order = orderFromList(subjects);
                 int subjectId = subjects.get(order).getX();
-//TODO Tutaj trzeba dokończyć
                 ArrayList<Pair<String, String>> studentsBySubject = dbManager.getSubjectStudents(subjectId);
                 for (int i = 0; i < studentsBySubject.size(); i++) {
                         System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
                 }
-                //int
+                //TUTAJ KONCZYMY
         }
 
         //--------------------------------------------------------------------------------------------------------------------=======================TUTAJ SKONCZYLEM NAPRAWIAC!!!!
@@ -693,10 +638,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 System.out.println("Wybierz ucznia, któremu chcesz wystawić uwagę");
                 ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
-                for (int i = 0; i < students.size(); i++) {
-                        System.out.println("[" + i + "] " + students.get(i).getY());
-                }
-                int order = scanner.nextInt();
+                int order = orderFromList1(students);
                 String studentID = students.get(order).getX();
 
                 System.out.println("Podaj treść uwagi i zatwierdź ENTEREM:");
@@ -716,25 +658,19 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         @Override
-        public void addCompletedLesson() {
+        public void addCompletedLesson() { //TUTAJ EWIDENTNIE TRZEBA POPRAWIC
                 System.out.println("Podaj date przeprowadzonej lekcji: DD.MM.RRRR");
                 String data = scanner.next();
                 System.out.println("Wybierz lekcje z podzialu godzin ktora przeprowadziles");
                 ArrayList<Pair<Integer, String>> lessons = dbManager.getLessonsByDate(data);
-                for (int i = 0; i < lessons.size(); i++) {
-                        System.out.println("[" + i + "] " + lessons.get(i).getY());
-                }
-                int order = scanner.nextInt();
+                int order = orderFromList(lessons);
                 int lessonID = lessons.get(order).getX();
                 System.out.println("Podaj temat lekcji");
                 String topic = scanner.next();
                 int lID = dbManager.addCompletedLesson(data, Integer.parseInt(user.getId()), lessonID, topic);
                 ArrayList<Pair<String, String>> students = dbManager.getStudentsByLesson(lID);
                 System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
-                for (int i = 0; i < students.size(); i++) {
-                        System.out.println("[" + i + "] " + students.get(i).getY());
-                }
-                order = scanner.nextInt();
+                order = orderFromList1(students);
                 while (order >= 0) {
                         dbManager.addStudentAbsence(students.get(order).getX(), lID);
                         order = scanner.nextInt();
