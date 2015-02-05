@@ -62,10 +62,10 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String password;
                 while (true) {
                         System.out.print("login: ");
-                        login = scanner.nextLine();
+                        login = scanner.next();
 
                         System.out.print("hasło: ");
-                        password = scanner.nextLine();
+                        password = scanner.next();
 
                         if (dbManager.signIn(login, password) != null) {
                                 return dbManager.signIn(login, password);
@@ -100,9 +100,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 }
                                 break;
                         case 1:
-                                user.setId(null);
-                                user.setPassword(null);
-                                user.setAccountType(null);
+                                user=null;
                                 initApplication();
                 }
         }
@@ -228,7 +226,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                         System.exit(0);
                                         break;
                                 case -1:
-                                        //logout(user.getAccountType());
+                                        logout(user.getAccountType());
                                         break;
                                 default:
                                         System.out.println("Niepoprawne polecenie,\nWybierz wartość z zakresu");
@@ -264,13 +262,24 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 studentMain();
         }
 
-        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI
+        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI --chyba juz sprawdzam
         public void getStudentAbsences() {
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać nieobecności");
-                System.out.println("od: DD.MM.RRRR");
-                String dateFrom = scanner.next();
-                System.out.println("do: DD.MM.RRRR");
-                String dateTo = scanner.next();
+                String dateFrom;
+                String dateTo;
+                while(true){
+                        System.out.println("od: DD.MM.RRRR");
+                        dateFrom = scanner.next();
+                        if(checkDate(dateFrom)) break;
+                        System.out.println("podaj poprawna date!");
+                }
+                while(true){
+                        System.out.println("do: DD.MM.RRRR");
+                        dateTo = scanner.next();
+                        if(checkDate(dateTo)) break;
+                        System.out.println("podaj poprawna date!");
+                }
+
                 ArrayList<String> absences = dbManager.getStudentAbsences(user.getId(), dateFrom, dateTo);
 
                 for (String s : absences) {
@@ -279,13 +288,23 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 studentMain();
         }
 
-        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI
+        @Override //TODO DOPISAC SPRAWDZANIE POPRAWNOSCI --chyba juz sprawdzam 
         public void getStudentNotes() {
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać uwagi");
-                System.out.println("od: DD.MM.RRRR");
-                String dateFrom = scanner.next();
-                System.out.println("do: DD.MM.RRRR");
-                String dateTo = scanner.next();
+                String dateFrom;
+                String dateTo;
+                while(true){
+                        System.out.println("od: DD.MM.RRRR");
+                        dateFrom = scanner.next();
+                        if(checkDate(dateFrom)) break;
+                        System.out.println("podaj poprawna date!");
+                }
+                while(true){
+                        System.out.println("do: DD.MM.RRRR");
+                        dateTo = scanner.next();
+                        if(checkDate(dateTo)) break;
+                        System.out.println("podaj poprawna date!");
+                }
                 ArrayList<String> notes = dbManager.getStudentNotes(user.getId(), dateFrom, dateTo);
 
                 for (String s : notes) {
@@ -340,7 +359,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                         switch (order) {
                                 case -1:
-                                        //logout(user.getAccountType());
+                                        logout(user.getAccountType());
                                         break;
                                 case 0:
                                         System.out.println("goodbye");
@@ -467,7 +486,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         @Override
-        public void addStudent() { //TODO finish this
+        public void addStudent() { //TODO finish this -- i co tutaj?
                 System.out.print("Podaj imie: ");
                 String name = scanner.next();
                 System.out.print("Podaj nazwisko: ");
@@ -552,7 +571,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 }
         }
 
-        @Override //TODO NOT YET IMPLEMENTED
+        @Override //TODO NOT YET IMPLEMENTED --napewno nie wklepane? nie wnikalem ale wyglada na skonczone na pierwszy rzut oka ;d
         public void addSubject() {
                 System.out.println("Podaj nazwę nowego przedmiotu");
                 String name = scanner.next();
@@ -563,7 +582,6 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 int classID = classes.get(order).getX();
 
                 System.out.println("Wybierz nauczyciela przypisanego do przedmiotu");
-
 
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getAllTeachers();
                 order = orderFromList(teachers);
@@ -602,14 +620,14 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                         addCompletedLesson();
                                         break;
                                 case 4:
-                                        //getTeacherSubject();
+                                        getTeacherSchedule();
                                         break;
                                 case 0:
                                         System.out.println("goodbye");
                                         System.exit(0);
                                         break;
                                 case -1:
-                                        //logout(user.getAccountType());
+                                        logout(user.getAccountType());
                                         break;
 
                                 default:
@@ -619,7 +637,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 }
         }
 
-        @Override //TODO NOT YET IMPLEMENTED
+        @Override //TODO NOT YET IMPLEMENTED -- tozmienilem
         public void addStudentGrade() {
                 System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
                 ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
@@ -629,6 +647,17 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 for (int i = 0; i < studentsBySubject.size(); i++) {
                         System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
                 }
+                order= orderFromList1(studentsBySubject);
+                String studentId = studentsBySubject.get(order).getX();
+                ArrayList<Pair<Integer, String>> activities = dbManager.getActivities();
+                order = orderFromList(activities);
+                int activityId = activities.get(order).getX();
+                System.out.println("podaj wartosc oceny");
+                int value = scanner.nextInt();
+                System.out.println("podaj temat");
+                String topic = scanner.next();
+                dbManager.addStudentGrade(subjectId,studentId,value,activityId,topic);
+                teacherMain();
                 //TUTAJ KONCZYMY
         }
 
@@ -678,12 +707,18 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 teacherMain();
         }
 
-        @Override //TODO NOT YET IMPLEMENTED
-        public void getTeacherSubject() {
-
+        @Override //TODO NOT YET IMPLEMENTED --to zaklepalem
+        public void getTeacherSchedule() {
+                ArrayList<ArrayList<String>> shedule = dbManager.getTeacherSchedule(Integer.parseInt(user.getId()));
+                System.out.printf("%-4s %-20s %-20s %-20s %-20s %s", " ", "PONIEDZIALEK", "WTOREK", "SRODA", "CZWARTEK", "PIATEK\n");
+                for (int j = 0; j < 10; j++) {
+                        System.out.printf("%-4d %-25s %-25s %-25s %-25s %s", j, shedule.get(0).get(j), shedule.get(1).get(j), shedule.get(2).get(j), shedule.get(3).get(j), shedule.get(4).get(j) + "\n");
+                }
+                System.out.println("Naciśnij enter, by kontynować");
+                teacherMain();
         }
 
-        @Override //TODO NOT YET IMPLEMENTED
+        @Override //TODO NOT YET IMPLEMENTED -- to chyba do wyjebania
         public void getSubjectStudents() {
         }
 

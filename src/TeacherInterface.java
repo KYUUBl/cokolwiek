@@ -4,7 +4,7 @@
 public interface TeacherInterface {
 
         public void teacherMain();
-        public void getTeacherSubject();
+        public void getTeacherSchedule();
         public void getSubjectStudents();
         public void addStudentGrade();
         public void addStudentNote();
