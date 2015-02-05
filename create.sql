@@ -774,6 +774,9 @@ INSERT INTO uwagi (id_ucznia, id_nauczyciela, opis, czy_pozytywna, data_wystawie
  (3, '96032315157', 7, 3,'polska'),
  (3, '96121214718', 7, 3,'lalka'),
  (1, '96121214718', 7, 5,'antyk'),
+ (1, '95091673574', 5, 5,'test'),
+ (1, '95091673574', 14, 5,'dzuma'),
+ (1, '95091673574', 22, 1,'Karboksyhemoglobina'),
  (5, '96022821662', 7, 3,'przediowsnie');
 
 INSERT INTO nieobecnosci(id_ucznia,id_lekcji) VALUES
@@ -792,7 +795,9 @@ INSERT INTO nieobecnosci(id_ucznia,id_lekcji) VALUES
  (95021079236,10),
  (95072279579,10),
  (97101943857,10),
+ (95091673574,13),
  (97111439528,8);
+
 
 UPDATE uczniowie SET id_uzytkownika='UNMY7J' where pesel = '96091227824'	;
 UPDATE uczniowie SET id_uzytkownika='P8OF5' where pesel = '95080364878'	;
