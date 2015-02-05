@@ -3,7 +3,7 @@ CREATE TABLE nauczyciele (
 	id                   serial  NOT NULL,
 	imie                 varchar(20)  NOT NULL,
 	nazwisko             varchar(20)  ,
-	id_uzytkownika	     varchar(20),
+	id_uzytkownika	     varchar(20) DEFAULT NULL,
 	CONSTRAINT pk_nauczyciele PRIMARY KEY ( id ),
 	CONSTRAINT idx_id_uzytkownika UNIQUE ( id_uzytkownika )
  );
@@ -45,7 +45,7 @@ CREATE TABLE uczniowie (
 	telefon_do_rodzica   numeric(9,0) ,
 	pesel                char(11) NOT NULL,
 	id_klasy             serial  NOT NULL,
-	id_uzytkownika	     varchar(20),
+	id_uzytkownika	     varchar(20) DEFAULT NULL,
 	aktywny		     bool DEFAULT TRUE NOT NULL,
 	CONSTRAINT pk_uczniowie PRIMARY KEY ( pesel ),
 	CONSTRAINT idx_id_uuzytkownika UNIQUE ( id_uzytkownika )

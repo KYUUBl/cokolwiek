@@ -364,6 +364,44 @@ public class DBManager {
                 }
                 return shedule;
         }
+        public ArrayList<Pair<String,String> > getStudentsWithoutUser() {
+                ArrayList<Pair<String,String> > students = new ArrayList<Pair<String,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,pesel from uczniowie where id_uzytkownika is null;");
+                        while (rs.next()) {
+                                Pair<String,String> pair = new Pair<String, String>(rs.getString("pesel"),rs.getString("imie")+" "+rs.getString("nazwisko"));
+//                                System.out.println(pair.getX()+" "+pair.getY());
+                                students.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return students;
+        }
+        public ArrayList<Pair<Integer,String> > getTeachersWithoutUser() {
+                ArrayList<Pair<Integer,String> > teachers = new ArrayList<Pair<Integer,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,id from nauczyciele where id_uzytkownika is null;");
+                        while (rs.next()) {
+                                Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),rs.getString("imie")+" "+rs.getString("nazwisko"));
+//                                System.out.println(pair.getX()+" "+pair.getY());
+                                teachers.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return teachers;
+        }
 
 
         public static void main(String args[])
