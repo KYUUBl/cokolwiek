@@ -347,25 +347,27 @@ public class DBManager {
                 return null;
         }
 
-        public ArrayList getLessonShedule(String pesel){
+        public ArrayList<ArrayList<String> > getLessonShedule(String pesel){
                 ArrayList<ArrayList<String> > shedule = new ArrayList<ArrayList<String>>();
                 for(int i=0;i<5;i++){
                         shedule.add(new ArrayList<String>());
                 }
                 try {
-
                         for(int i=2;i<=6;i++){
                                 stmt = c.createStatement();
                                 ResultSet rs = stmt.executeQuery("select p.nazwa,pl.nr_lekcji from plan_lekcji pl join przedmioty p on pl.id_przedmiotu = p.id join klasy k on p.id_klasy = k.id join uczniowie u on k.id=u.id_klasy where dzien_tygodnia = "+i+" and u.pesel = '"+pesel+"' order by pl.nr_lekcji;");
+                                int j=0;
                                 while (rs.next()) {
-                                        shedule.get(i-2).add(rs.getInt("nr_lekcji")+"."+rs.getString("nazwa"));
+                                        int tmp = rs.getInt("nr_lekcji");
+                                        while(j<tmp){ shedule.get(i-2).add(""); j++;}
+                                        shedule.get(i-2).add(rs.getString("nazwa"));
+                                        j++;
                                 }
+                                while(shedule.get(i-2).size()<10) shedule.get(i-2).add("");
                                 rs.close();
                                 stmt.close();
                         }
-
 //                        System.out.println("success");
-
                 } catch (Exception e) {
                         e.printStackTrace();
                         System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -569,5 +571,9 @@ public class DBManager {
                 //System.out.printf("%-20s %s",c,a+"\n");
                 //dbManager.changeStudentPassword("95091673574","kamil");
                // dbManager.getTeachersWithoutClass();
+
+
+                ArrayList<Pair<Integer,String> > sub = dbManager.getStudentSubjects("95091673574");
+                for(int i=0;i<sub.size();i++) System.out.println(sub.get(i).getX()+" "+sub.get(i).getY());
         }
 }
