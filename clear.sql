@@ -13,10 +13,16 @@ drop table if exists uzytkownicy cascade;
 
 drop trigger if exists user_id_check on uczniowie;
 drop trigger if exists user_id_check on nauczyciele;
+drop trigger if exists teacherlesson on plan_lekcji;
+drop trigger if exists classlesson on plan_lekcji;
 
 drop function if exists check_ocena_przedmiot(integer,integer);
 drop function if exists check_weekday(numeric(1,0));
 drop function if exists check_nieobecnosc_przedmiot(integer,integer);
 drop function if exists user_id_check();
+drop function if exists teacherlesson();
+drop function if exists getsubjectteacher(integer);
+drop function if exists classlesson();
+drop function if exists getsubjectclass(integer);
 
 commit;

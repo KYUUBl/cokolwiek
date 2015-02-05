@@ -576,6 +576,33 @@ public class DBManager {
                 }
                 return teachers;
         }
+        public ArrayList<ArrayList<String> > getTeacherSchedule(int id){
+                ArrayList<ArrayList<String> > shedule = new ArrayList<ArrayList<String>>();
+                for(int i=0;i<5;i++){
+                        shedule.add(new ArrayList<String>());
+                }
+                try {
+                        for(int i=2;i<=6;i++){
+                                stmt = c.createStatement();
+                                ResultSet rs = stmt.executeQuery("select p.nazwa,pl.nr_lekcji,k.oddzial,k.rok_rozpoczecia from plan_lekcji pl join przedmioty p on pl.id_przedmiotu = p.id join klasy k on p.id_klasy = k.id join nauczyciele n on n.id=p.id_prowadzacego where dzien_tygodnia = "+i+" and n.id = '"+id+"' order by pl.nr_lekcji;");
+                                int j=0;
+                                while (rs.next()) {
+                                        int tmp = rs.getInt("nr_lekcji");
+                                        while(j<tmp){ shedule.get(i-2).add(""); j++;}
+                                        shedule.get(i-2).add(rs.getString("nazwa")+"("+rs.getInt("rok_rozpoczecia")+rs.getString("oddzial")+")");
+                                        j++;
+                                }
+                                while(shedule.get(i-2).size()<10) shedule.get(i-2).add("");
+                                rs.close();
+                                stmt.close();
+                        }
+//                        System.out.println("success");
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return shedule;
+        }
 
         public static void main(String args[])
         {

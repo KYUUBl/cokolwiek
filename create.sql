@@ -181,6 +181,38 @@ FOR EACH ROW EXECUTE PROCEDURE user_id_check();
 CREATE TRIGGER user_id_check BEFORE INSERT OR UPDATE ON nauczyciele
 FOR EACH ROW EXECUTE PROCEDURE user_id_check();
 
+create or replace function getsubjectteacher(lid integer) returns integer 
+	as $$ select id_prowadzacego from przedmioty where id=lid $$
+	language SQL;
+
+create or replace function teacherlesson() returns trigger as $teacherlesson$
+begin
+	if(getsubjectteacher(new.id_przedmiotu) in (select id_prowadzacego from plan_lekcji pl join przedmioty p on pl.id_przedmiotu=p.id where pl.dzien_tygodnia = new.dzien_tygodnia and pl.nr_lekcji=new.nr_lekcji and p.aktywny))
+	THEN RAISE EXCEPTION 'nauczyciel juz prowadzi inna lekcje w tym czasie';
+	END IF;
+	RETURN NEW;
+END;
+$teacherlesson$ LANGUAGE plpgsql;
+
+CREATE TRIGGER teacherlesson BEFORE INSERT OR UPDATE ON plan_lekcji
+FOR EACH ROW EXECUTE PROCEDURE teacherlesson();
+
+create or replace function getsubjectclass(lid integer) returns integer 
+	as $$ select id_klasy from przedmioty where id=lid $$
+	language SQL;
+
+create or replace function classlesson() returns trigger as $classlesson$
+begin
+	if(getsubjectclass(new.id_przedmiotu) in (select id_klasy from plan_lekcji pl join przedmioty p on pl.id_przedmiotu=p.id where pl.dzien_tygodnia = new.dzien_tygodnia and pl.nr_lekcji=new.nr_lekcji and p.aktywny))
+	THEN RAISE EXCEPTION 'nauczyciel juz prowadzi inna lekcje w tym czasie';
+	END IF;
+	RETURN NEW;
+END;
+$classlesson$ LANGUAGE plpgsql;
+
+CREATE TRIGGER classlesson BEFORE INSERT OR UPDATE ON plan_lekcji
+FOR EACH ROW EXECUTE PROCEDURE classlesson();
+
 --przykladowe dane:
 
 INSERT INTO rodzaje_aktywnosci (nazwa, waga) VALUES
@@ -536,158 +568,103 @@ INSERT INTO uczniowie (imie, nazwisko, telefon_do_rodzica, pesel, id_klasy,aktyw
 
 
  INSERT INTO plan_lekcji(id_przedmiotu, nr_lekcji, dzien_tygodnia) VALUES
- --KLASA1a
- (1, 1, 2),
- (1, 2, 2),
- (7, 3, 2),
-
- (13, 1, 3),
- (17, 2, 3),
- (20, 3, 3),
-
- (29, 1, 4),
- (35, 2, 4),
- (35, 3, 4),
-
- (20, 1, 5),
- (1, 2, 5),
- (1, 3, 5),
-
- (13, 1, 6),
- (13, 2, 6),
- (35, 3, 6),
-
- --KLASA1b
- (8, 1, 2),
- (2, 2, 2),
- (14, 3, 2),
-
- (23, 1, 3),
- (26, 2, 3),
- (30, 3, 3),
-
- (36, 1, 4),
- (30, 2, 4),
- (30, 3, 4),
-
- (2, 1, 5),
- (2, 2, 5),
- (26, 3, 5),
-
- (14, 1, 6),
- (14, 2, 6),
- (8, 3, 6),
-
- --KLASA2a
- (3, 1, 2),
- (9, 2, 2),
- (15, 3, 2),
-
- (15, 1, 3),
- (18, 2, 3),
- (21, 3, 3),
-
- (31, 1, 4),
- (31, 2, 4),
- (37, 3, 4),
-
- (3, 1, 5),
- (3, 2, 5),
- (15, 3, 5),
-
- (18, 1, 6),
- (31, 2, 6),
- (18, 3, 6),
-
- --KLAS2b
- (4, 1, 2),
- (10, 2, 2),
- (16, 3, 2),
-
- (16, 1, 3),
- (24, 2, 3),
- (24, 3, 3),
-
- (27, 1, 4),
- (27, 2, 4),
- (32, 3, 4),
-
- (38, 1, 5),
- (38, 2, 5),
- (27, 3, 5),
-
- (4, 1, 6),
- (4, 2, 6),
- (24, 3, 6),
-
- --KLASA3a
- (5, 1, 2),
- (5, 2, 2),
- (11, 3, 2),
-
- (19, 1, 3),
- (22, 2, 3),
- (22, 3, 3),
-
- (33, 1, 4),
- (33, 2, 4),
- (39, 3, 4),
-
- (19, 1, 5),
- (19, 2, 5),
- (11, 3, 5),
-
- (5, 1, 6),
- (5, 2, 6),
- (11, 3, 6),
-
- --KLAS3b
- (6, 1, 2),
- (6, 2, 2),
- (12, 3, 2),
-
- (12, 1, 3),
- (25, 2, 3),
- (28, 3, 3),
-
- (28, 1, 4),
- (28, 2, 4),
- (34, 3, 4),
-
- (34, 1, 5),
- (40, 2, 5),
- (40, 3, 5),
-
- (6, 1, 6),
- (6, 2, 6),
- (28, 3, 6),
-
- --klasaKamilaxd
+ 
+ --klasaKamila(id5)
  (33,0,2),
+ (33,1,2),
+ (22,2,2),
+ (19,3,2),
+ (11,4,2),
  (39,4,3),
  (5,5,3),
  (5,6,3),
- (11,4,5);
+ (11,7,3),
+ (42,8,3),
+ (39,8,3),
+ (33,4,4),
+ (5,5,4),
+ (5,6,4),
+ (11,7,4),
+ (39,8,4),
+ (11,2,5),
+ (5,3,5),
+ (5,4,5),
+ (33,5,5),
+ (22,0,6),
+ (39,1,6),
+ (5,2,6),
+ (5,3,6),
+
+--inne
+  (1,0,2),
+ (2,1,2),
+ (3,2,2),
+ (4,3,2),
+ (6,4,2),
+ (7,1,2),
+ (8,2,2),
+ (9,3,2),
+ (10,7,2),
+ (12,5,2),
+ (13,0,3),
+ (13,1,3),
+ (14,2,3),
+ (14,3,3),
+ (15,4,3),
+ (15,5,3),
+ (16,6,3),
+ (16,7,3),
+ (23,0,4),
+ (26,1,4),
+ (24,2,4),
+ (27,3,4),
+ (25,4,4),
+ (28,5,4),
+ (23,0,5),
+ (26,1,5),
+ (24,2,5),
+ (27,3,5),
+ (25,4,5),
+ (28,5,5),
+ (7,0,6),
+ (8,1,6),
+ (9,2,6),
+ (10,3,6),
+ (12,4,6),
+ (12,5,6),
+ (34,0,6),
+ (29,1,6),
+ (30,2,6),
+ (31,3,6),
+ (32,4,6),
+ (32,5,6);
+
+
+
 
  INSERT INTO przeprowadzone_lekcje(data, temat_zajec, id_prowadzacego, id_lekcji) VALUES
  ('2014-12-15'::date, 'xfgu hjutyfdwqdfv', 1, 1),
  ('2014-12-15'::date, 'fdsfqeytry dfv', 2, 2),
  ('2014-12-15'::date, 'fdsfqfdw qdfv', 3, 3),
- ('2014-12-15'::date, 'ddg jktrtwehtjblr fqfdwqdfv', 4, 16),
- ('2014-12-15'::date, 'fdsfq hgfh fdwqdfv', 5, 17),
- ('2014-12-15'::date, 'fdsfqfdwqdfv', 6, 18),
- ('2014-12-15'::date, 'pdsf nhgfju qeytry dfv', 7, 31),
- ('2014-12-15'::date, 'kdsfqfdw qdfv', 8, 32),
- ('2014-12-15'::date, 'fdg jklr fqfdwqdfv', 9, 33),
- ('2014-12-15'::date, 'fkdsfq hgfh fdwqdfv', 10, 46),
- ('2014-12-15'::date, 'kfdsffdw qdfv', 11, 47),
- ('2014-12-15'::date, 'fpdqytry dpiopfv', 12, 48),
- ('2014-12-15'::date, 'kfspiofdw qdfv', 13, 61),
- ('2014-12-15'::date, 'mfdg jklr fqfdwqdfv', 14, 62),
- ('2014-12-15'::date, 'gfdsfq hgfh fdwqdfv', 15, 63),
- ('2014-12-15'::date, 'lsfqfqwe dw qdfv', 16, 76),
- ('2014-12-15'::date, 'pfbvdg jklr fqfdwqdfv', 17, 77),
- ('2014-12-15'::date, 'qfdsfq hgfh fdwqkhjkdfv', 18, 78);
+ ('2014-12-15'::date, 'ddg jktrtwehtjblr fqfdwqdfv', 4, 4),
+ ('2014-12-15'::date, 'fdsfq hgfh fdwqdfv', 5, 5),
+ ('2014-12-15'::date, 'fdsfqfdwqdfv', 6, 25),
+ ('2014-12-15'::date, 'pdsf nhgfju qeytry dfv', 7, 26),
+ ('2014-12-15'::date, 'kdsfqfdw qdfv', 8, 27),
+ ('2014-12-15'::date, 'fdg jklr fqfdwqdfv', 9, 28),
+ ('2014-12-15'::date, 'fkdsfq hgfh fdwqdfv', 10, 29),
+ ('2014-12-15'::date, 'kfdsffdw qdfv', 11, 30),
+ ('2014-12-15'::date, 'fpdqytry dpiopfv', 12, 31),
+ ('2014-12-15'::date, 'kfspiofdw qdfv', 13, 32),
+ ('2014-12-15'::date, 'mfdg jklr fqfdwqdfv', 14, 33),
+ ('2014-12-15'::date, 'gfdsfq hgfh fdwqdfv', 15, 34),
+ ('2014-12-16'::date, 'lsfqfqwe dw qdfv', 16, 6),
+ ('2014-12-16'::date, 'pfbvdg jklr fqfdwqdfv', 17, 7),
+ ('2014-12-16'::date, 'qfdsfq hgfh fdwqkhjkdfv', 18, 8),
+ ('2014-12-16'::date, 'lsfqfqwe dw qdfv', 19, 9),
+ ('2014-12-16'::date, 'pfbvdg jklr fqfdwqdfv', 20, 10),
+ ('2014-12-17'::date, 'xfgu hjutyfdwqdfv', 1, 13),
+ ('2014-12-17'::date, 'xfgu hjutyfdwqdfv', 1, 14);
 
 
 INSERT INTO uwagi (id_ucznia, id_nauczyciela, opis, czy_pozytywna, data_wystawienia) VALUES
@@ -788,23 +765,20 @@ INSERT INTO uwagi (id_ucznia, id_nauczyciela, opis, czy_pozytywna, data_wystawie
  (5, '96022821662', 6, 3,'przediowsnie');
 
 INSERT INTO nieobecnosci(id_ucznia,id_lekcji) VALUES
- (97041054897,1),
- (97081779471,1),
- (95020374257,1),
- (96080786581,9),
- (96112772823,9),
- (95072417689,9),
- (97042933434,17),
- (97112593137,16),
- (95042777524,14),
- (97010853852,14),
- (95080364878,10),
- (96070275499,10),
- (95021079236,10),
- (95072279579,10),
- (97101943857,10),
- (95091673574,13),
- (97111439528,18);
+ (95091673574,1),
+ (95091673574,2),
+ (95091673574,3),
+ (95091673574,4),
+ (95091673574,5),
+ (97010397938,21),
+ (97010397938,22),
+ (96031317839,19),
+ (96031317839,18),
+ (96031317839,17);
+
+
+
+
 
 
 UPDATE uczniowie SET id_uzytkownika='UNMY7J' where pesel = '96091227824'	;
