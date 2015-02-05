@@ -503,6 +503,60 @@ public class DBManager {
                 return students;
         }
 
+        public ArrayList<Pair<Integer,String> > getAllClasses(){
+                ArrayList<Pair<Integer,String> > classes = new ArrayList<Pair<Integer,String> >();
+                try{
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("select * from klasy");
+                        while(rs.next()){
+                                classes.add(new Pair<Integer, String>(rs.getInt("id"),rs.getString("oddzial")+" "+rs.getString("rok_rozpoczecia")));
+                        }
+                        stmt.close();
+                }catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return classes;
+        }
+        public ArrayList<Pair<String,String> > getAllStudents() {
+                ArrayList<Pair<String,String> > students = new ArrayList<Pair<String,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,pesel from uczniowie;");
+                        while (rs.next()) {
+                                Pair<String,String> pair = new Pair<String, String>(rs.getString("pesel"),rs.getString("imie")+" "+rs.getString("nazwisko"));
+//                                System.out.println(pair.getX()+" "+pair.getY());
+                                students.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return students;
+        }
+
+        public ArrayList<Pair<Integer,String> > getTeachersWithoutClass() {
+                ArrayList<Pair<Integer,String> > teachers = new ArrayList<Pair<Integer,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,id from (SELECT imie,nazwisko,n.id,id_wychowawcy from nauczyciele n left join klasy k on n.id=k.id_wychowawcy) f where id_wychowawcy is null;");
+                        while (rs.next()) {
+                                Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),rs.getString("imie")+" "+rs.getString("nazwisko"));
+                               // System.out.println(pair.getX()+" "+pair.getY());
+                                teachers.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return teachers;
+        }
 
         public static void main(String args[])
         {
@@ -513,6 +567,7 @@ public class DBManager {
                 //System.out.printf("%-20s %s",a,b+"\n");
                 //System.out.printf("%-20s %s", b, c+"\n");
                 //System.out.printf("%-20s %s",c,a+"\n");
-                dbManager.changeStudentPassword("95091673574","kamil");
+                //dbManager.changeStudentPassword("95091673574","kamil");
+               // dbManager.getTeachersWithoutClass();
         }
 }
