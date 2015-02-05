@@ -35,7 +35,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Dziennik Elektroniczny 1.0");
                 user = signIn();
 
-                switch(user.getAccountType()) {
+                switch (user.getAccountType()) {
                         case ADMIN:
                                 adminMain();
                                 break;
@@ -57,62 +57,104 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 //editXML();
                 String login;
                 String password;
-                while(true) {
+                while (true) {
                         System.out.print("login: ");
                         login = scanner.nextLine();
 
                         System.out.print("hasło: ");
                         password = scanner.nextLine();
 
-                        if(dbManager.signIn(login, password) != null) {
+                        if (dbManager.signIn(login, password) != null) {
                                 return dbManager.signIn(login, password);
                         }
 
-                        if(login.equals(ADMIN_LOGIN) && password.equals(ADMIN_PASSWORD)) {
+                        if (login.equals(ADMIN_LOGIN) && password.equals(ADMIN_PASSWORD)) {
                                 return new User(ADMIN_ID, AccountType.ADMIN, password);
                         }
                         System.out.println("Login lub hasło niepoprawne, proszę spróbować ponownie");
                 }
         }
 
+        public void logout(AccountType accountType) { //TODO To zdecydowanie nie dziala
+                System.out.println("Czy na pewno chcesz się wylogować?");
+                System.out.println("[1] TAK");
+                System.out.println("[0] NIE");
+                int order = scanner.nextInt();
+                switch (order) {
+                        case 0:
+                                switch (accountType) {
+                                        case ADMIN:
+                                                adminMain();
+                                                break;
+                                        case STUDENT:
+                                                studentMain();
+                                                break;
+                                        case TEACHER:
+                                                teacherMain();
+                                                break;
+                                        default:
+                                                throw new RuntimeException("Wrong Order");
+                                }
+                                break;
+                        case 1:
+                                user.setId(null);
+                                user.setPassword(null);
+                                user.setAccountType(null);
+                                signIn();
+
+                }
+
+        }
+
 
         @Override
         public void studentMain() {
                 System.out.println("Zalogowano jako uczeń o numerze PESEL:" + user.getId());
-               while(true) {
-                       System.out.println("Wybierz działanie:");
-                       System.out.println("[0] Zakończ program");
-                       System.out.println("[1] Wyświetl oceny");
-                       System.out.println("[2] Wyświetl nieobecności");
-                       System.out.println("[3] Wyświetl uwagi");
-                       System.out.println("[4] Zmień hasło");
-                       int order = scanner.nextInt();
+                while (true) {
+                        System.out.println("Wybierz działanie:");
 
-                       switch (order) {
-                               case 1:
-                                       getStudentGrades();
-                                       break;
-                               case 2:
-                                       getStudentAbsences();
-                                       break;
-                               case 3:
-                                       getStudentNotes();
-                                       break;
-                               case 4:
-                                       changeStudentPassword();
-                                       break;
-                               case 0:
-                                       System.out.println("goodbye");
-                                       System.exit(0);
-                               default:
-                                       throw new RuntimeException("Wrong order");
-                       }
-               }
+                        System.out.println("[-1] Wyloguj");
+                        System.out.println("[0] Zakończ program");
+                        System.out.println("[1] Wyświetl oceny");
+                        System.out.println("[2] Wyświetl nieobecności");
+                        System.out.println("[3] Wyświetl uwagi");
+                        System.out.println("[4] Wyświetl plan lekcji");
+                        System.out.println("[5] Zmień hasło");
+                        int order = scanner.nextInt();
+
+                        switch (order) {
+                                case 1:
+                                        getStudentGrades();
+                                        break;
+                                case 2:
+                                        getStudentAbsences();
+                                        break;
+                                case 3:
+                                        getStudentNotes();
+                                        break;
+                                case 4:
+                                        getStudentSchedule();
+                                        break;
+                                case 5:
+                                        changeStudentPassword();
+                                        break;
+                                case 0:
+                                        System.out.println("goodbye");
+                                        System.exit(0);
+                                        break;
+                                case -1:
+                                        //logout(user.getAccountType());
+                                        break;
+                                default:
+                                        throw new RuntimeException("Wrong order");
+                        }
+                }
         }
 
         @Override
         public void adminMain() {
                 System.out.println("Zalogowano jako Admin \n Wybierz działanie:");
+                System.out.println("[-1] Wyloguj");
                 System.out.println("[0] Zakończ program");
                 System.out.println("[1] Zarządzaj bazą");
                 System.out.println("[2] Zarządzaj szkołą");
@@ -133,6 +175,10 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         case 0:
                                 System.out.println("goodbye");
                                 System.exit(0);
+                                break;
+                        case -1:
+                                //logout(user.getAccountType());
+                                break;
                         default:
                                 throw new RuntimeException("Wrong order");
                 }
@@ -142,7 +188,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void teacherMain() {
                 System.out.println("Zalogowano jako nauczyciel o ID" + user.getId() + "\n" +
                         "Wybierz działanie:");
-
+                System.out.println("[-1] Wyloguj");
                 System.out.println("[0] Zakończ program");
                 System.out.println("[1] Dodaj ocene");
                 System.out.println("[2] Dodaj uwage");
@@ -166,12 +212,138 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         case 0:
                                 System.out.println("goodbye");
                                 System.exit(0);
+                                break;
+                        case -1:
+                                //logout(user.getAccountType());
+                                break;
 
                         default:
                                 throw new RuntimeException("Wrong order");
                 }
 
         }
+
+        @Override
+        public void editXML() { //TODO Implement this shit
+
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = null;
+                try {
+                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                }
+                try {
+                        InputStream fis = getClass().getResourceAsStream("adminPassword.xml");
+                        Document document = documentBuilder.parse(fis);
+                        document.setNodeValue("ala");
+
+
+                        Node password = document.getFirstChild();
+                        System.out.println("Stare: " + password.getNodeValue());
+                        password.setNodeValue("ala");
+
+                        System.out.println("Nowe:" + password.getNodeValue());
+                } catch (SAXException e) {
+                        e.printStackTrace();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
+
+
+// ------------------------------------STUDENT VIEW METHODS ------------------------------------ \\
+
+        @Override
+        public void getStudentGrades() {
+                ArrayList<Pair<Integer, String>> subjects = new ArrayList<Pair<Integer, String>>();
+                subjects = dbManager.getStudentSubjects(user.getId());
+                for (int i = 0; i < subjects.size(); i++) {
+                        System.out.println("[" + i + "] " + subjects.get(i).getY());
+                }
+                System.out.println("\n WYBIERZ PRZEDMIOT");
+                int order = scanner.nextInt();
+                int subject = subjects.get(order).getX();
+
+                ArrayList<String> grades = new ArrayList<String>();
+                grades = dbManager.getStudentGrades(user.getId(), subject);
+                for (int i = 0; i < grades.size(); i++) {
+                        System.out.println(grades.get(i));
+                }
+                studentMain();
+        }
+
+        @Override
+        public void getStudentSchedule() {
+                ArrayList<ArrayList<String>> shedule = dbManager.getLessonShedule(user.getId());
+                System.out.printf("%-4s %-20s %-20s %-20s %-20s %s", " ", "PONIEDZIALEK", "WTOREK", "SRODA", "CZWARTEK", "PIATEK\n");
+                for (int j = 0; j < 10; j++) {
+                        System.out.printf("%-4d %-20s %-20s %-20s %-20s %s", j, shedule.get(0).get(j), shedule.get(1).get(j), shedule.get(2).get(j), shedule.get(3).get(j), shedule.get(4).get(j) + "\n");
+                }
+                studentMain();
+        }
+
+        @Override
+        public void getStudentAbsences() { //TRZEBA UODPORNIC NA ZJEBOW
+                System.out.println("Podaj zakres, z jakiego chcesz otrzymać nieobecności");
+                System.out.println("od: DD.MM.RRRR");
+                String dateFrom = scanner.next();
+                System.out.println("do: DD.MM.RRRR");
+                String dateTo = scanner.next();
+                ArrayList<String> absences = dbManager.getStudentAbsences(user.getId(), dateFrom, dateTo);
+
+                for (String s : absences) {
+                        System.out.println(s);
+                }
+                studentMain();
+        }
+
+        @Override
+        public void getStudentNotes() {
+                System.out.println("Podaj zakres, z jakiego chcesz otrzymać uwagi");
+                System.out.println("od: DD.MM.RRRR");
+                String dateFrom = scanner.next();
+                System.out.println("do: DD.MM.RRRR");
+                String dateTo = scanner.next();
+                ArrayList<String> notes = dbManager.getStudentNotes(user.getId(), dateFrom, dateTo);
+
+                for (String s : notes) {
+                        System.out.println(s);
+                }
+                studentMain();
+        }
+
+        @Override
+        public void changeStudentPassword() {
+                while (true) {
+                        System.out.println("Podaj stare haslo: ");
+                        String oldPassword = scanner.next();
+                        System.out.println("login: " + user.getId());
+                        System.out.println("haslo: " + oldPassword);
+
+                        if (user.getPassword().equals(oldPassword)) {
+                                break;
+                        } else {
+                                System.out.println("Podane hasło jest niepoprawne, spróbuj ponownie");
+                        }
+                }
+                String newPassword, newPassword1;
+                do {
+                        System.out.println("Podaj nowe hasło: ");
+                        newPassword = scanner.next();
+
+                        System.out.println("Zatwierdz nowe hasło: ");
+                        newPassword1 = scanner.next();
+                } while (!newPassword.equals(newPassword1) && newPassword != null);
+
+                dbManager.changeStudentPassword(user.getId(), newPassword);
+                user.setPassword(newPassword);
+                System.out.println("Hasło zostało zmienione");
+                studentMain();
+        }
+
+// ------------------------------------ END ------------------------------------ \\
+// ------------------------------------ ADMIN VIEW METHODS ------------------------------------ \\
 
         @Override
         public void manageDatabase() {
@@ -181,7 +353,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 int order = scanner.nextInt();
 
-                switch(order) {
+                switch (order) {
                         case 1:
                                 addUserStudent();
                                 break;
@@ -244,6 +416,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("login: " + login);
                 System.out.println("haslo: " + password);
                 System.out.println("Dla ucznia: " + students.get(order).getY());
+                manageDatabase();
         }
 
         @Override
@@ -264,6 +437,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("login: " + login);
                 System.out.println("haslo: " + password);
                 System.out.println("Dla nauczyciela: " + students.get(order).getY());
+                manageDatabase();
         }
 
         @Override
@@ -276,7 +450,17 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String pesel = scanner.next();
                 System.out.print("Podaj numer telefonu rodzica: ");
                 int phoneNumber = scanner.nextInt();
-                //dbManager.get
+                ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
+                System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
+                for (int i = 0; i < classes.size(); i++) {
+                        System.out.println("[" + i + "] " + classes.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                int classID = classes.get(order).getX();
+                dbManager.addStudent(name, lastname, pesel, phoneNumber, classID);
+                System.out.println("Pomyslnie dodano ucznia");
+                manageSchool();
+
         }
 
         @Override
@@ -286,38 +470,22 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.print("Podaj nazwisko: ");
                 String lastname = scanner.next();
                 dbManager.addTeacher(name, lastname);
-                System.out.println("Dodano nauczyciela");
+                System.out.println("Dodano nauczyciela. \n");
+                manageSchool();
         }
 
         @Override
         public void deactivateStudent() {
-
-        }
-
-        @Override
-        public void addCompletedLesson() {
-                System.out.println("Podaj date przeprowadzonej lekcji: DD.MM.RRRR");
-                String data = scanner.next();
-                System.out.println("Wybierz lekcje z podzialu godzin ktora przeprowadziles");
-                ArrayList<Pair<Integer, String>> lessons = dbManager.getLessonsByDate(data);
-                for (int i = 0; i < lessons.size(); i++) {
-                        System.out.println("[" + i + "] " + lessons.get(i).getY());
-                }
-                int order = scanner.nextInt();
-                int lessonID = lessons.get(order).getX();
-                System.out.println("Podaj temat lekcji");
-                String topic = scanner.next();
-                int lID = dbManager.addCompletedLesson(data, Integer.parseInt(user.getId()), lessonID, topic);
-                ArrayList<Pair<String, String>> students = dbManager.getStudentsByLesson(lID);
-                System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
+                System.out.println("Wybierz ucznia, którech chcesz deaktywować");
+                ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
                 for (int i = 0; i < students.size(); i++) {
                         System.out.println("[" + i + "] " + students.get(i).getY());
                 }
-                order = scanner.nextInt();
-                while (order >= 0) {
-                        dbManager.addStudentAbsence(students.get(order).getX(), lID);
-                        order = scanner.nextInt();
-                }
+                int order = scanner.nextInt();
+                String userID = students.get(order).getX();
+                dbManager.deactivateStudent(userID);
+                System.out.println("Pomyślnie deaktywowano studenta");
+                manageSchool();
         }
 
         @Override
@@ -334,16 +502,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         System.out.println("Powracam do zarządzania szkołą");
                         manageSchool();
                 }
-
-
+                manageSchool();
         }
 
-        @Override
-        public void addSubject() {
-
-        }
-
-        //TODO Get this method to work, Exception is being thrown
         @Override
         public void changeAdminPassword() {
                 String oldPassword;
@@ -371,123 +532,53 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         }
 
-        @Override
-        public void editXML() { //TODO Implement this shit
-
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = null;
-                try {
-                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
-                }
-                try {
-                        InputStream fis = getClass().getResourceAsStream("adminPassword.xml");
-                        Document document = documentBuilder.parse(fis);
-                        document.setNodeValue("ala");
-
-
-                        Node password = document.getFirstChild();
-                        System.out.println("Stare: " + password.getNodeValue());
-                        password.setNodeValue("ala");
-
-                        System.out.println("Nowe:" + password.getNodeValue());
-                } catch (SAXException e) {
-                        e.printStackTrace();
-                } catch (IOException e) {
-                        e.printStackTrace();
-                }
-        }
+// ------------------------------------ END ------------------------------------ \\
+// ------------------------------------ TEACHER VIEW METHODS ------------------------------------ \\
 
         @Override
-        public void getStudentGrades() {
-                ArrayList<Pair<Integer,String> > subjects = new ArrayList<Pair<Integer,String> >();
-                subjects = dbManager.getStudentSubjects(user.getId());
-                for(int i = 0; i<subjects.size(); i++) {
-                        System.out.println("[" + i + "] " + subjects.get(i).getY());
+        public void addCompletedLesson() {
+                System.out.println("Podaj date przeprowadzonej lekcji: DD.MM.RRRR");
+                String data = scanner.next();
+                System.out.println("Wybierz lekcje z podzialu godzin ktora przeprowadziles");
+                ArrayList<Pair<Integer, String>> lessons = dbManager.getLessonsByDate(data);
+                for (int i = 0; i < lessons.size(); i++) {
+                        System.out.println("[" + i + "] " + lessons.get(i).getY());
                 }
-                System.out.println("\n WYBIERZ PRZEDMIOT");
                 int order = scanner.nextInt();
-                int subject = subjects.get(order).getX();
-
-                ArrayList<String> grades = new ArrayList<String>();
-                grades=dbManager.getStudentGrades(user.getId(),subject );
-                for(int i = 0; i<grades.size(); i++) {
-                        System.out.println(grades.get(i));
+                int lessonID = lessons.get(order).getX();
+                System.out.println("Podaj temat lekcji");
+                String topic = scanner.next();
+                int lID = dbManager.addCompletedLesson(data, Integer.parseInt(user.getId()), lessonID, topic);
+                ArrayList<Pair<String, String>> students = dbManager.getStudentsByLesson(lID);
+                System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
+                for (int i = 0; i < students.size(); i++) {
+                        System.out.println("[" + i + "] " + students.get(i).getY());
                 }
-
-        }
-
-        @Override
-        public void getStudentAbsences() { //TRZEBA UODPORNIC NA ZJEBOW
-                System.out.println("Podaj zakres, z jakiego chcesz otrzymać nieobecności");
-                System.out.println("od: DD.MM.RRRR");
-                String dateFrom = scanner.next();
-                System.out.println("do: DD.MM.RRRR");
-                String dateTo = scanner.next();
-                ArrayList<String> absences = dbManager.getStudentAbsences(user.getId(), dateFrom, dateTo);
-
-            for (String s : absences) {
-                System.out.println(s);
-            }
-
-        }
-
-        @Override
-        public void getStudentNotes() {
-            System.out.println("Podaj zakres, z jakiego chcesz otrzymać uwagi");
-            System.out.println("od: DD.MM.RRRR");
-            String dateFrom = scanner.next();
-            System.out.println("do: DD.MM.RRRR");
-            String dateTo = scanner.next();
-            ArrayList<String> notes = dbManager.getStudentNotes(user.getId(), dateFrom, dateTo);
-
-            for (String s : notes) {
-                System.out.println(s);
-            }
-
-        }
-
-        @Override
-        public void changeStudentPassword() {
-                while (true) {
-                        System.out.println("Podaj stare haslo: ");
-                        String oldPassword = scanner.next();
-                        System.out.println("login: " + user.getId());
-                        System.out.println("haslo: " + oldPassword);
-
-                        if (user.getPassword().equals(oldPassword)) {
-                                break;
-                        } else {
-                                System.out.println("Podane hasło jest niepoprawne, spróbuj ponownie");
-                        }
+                order = scanner.nextInt();
+                while (order >= 0) {
+                        dbManager.addStudentAbsence(students.get(order).getX(), lID);
+                        order = scanner.nextInt();
                 }
-                String newPassword, newPassword1;
-                do {
-                        System.out.println("Podaj nowe hasło: ");
-                        newPassword = scanner.next();
-
-                        System.out.println("Zatwierdz nowe hasło: ");
-                        newPassword1 = scanner.next();
-                } while (!newPassword.equals(newPassword1) && newPassword != null);
-
-                dbManager.changeStudentPassword(user.getId(), newPassword);
-                user.setPassword(newPassword);
-                System.out.println("Hasło zostało zmienione");
+                teacherMain();
         }
 
-        @Override
+        @Override //TODO NOT YET IMPLEMENTED
+        public void addSubject() {
+
+        }
+
+        @Override //TODO NOT YET IMPLEMENTED
         public void getTeacherSubject() {
 
         }
 
-        @Override
+        @Override //TODO NOT YET IMPLEMENTED
         public void getSubjectStudents() {
 
         }
 
-        @Override
-        public void addStudentGrade() { //TODO Dokonczyc ten shit
+        @Override //TODO NOT YET IMPLEMENTED
+        public void addStudentGrade() {
                 System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
                 ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
                 for (int i = 0; i < subjects.size(); i++) {
@@ -505,20 +596,19 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         }
 
-        @Override
+        @Override //TODO NOT YET IMPLEMENTED
         public void addStudentNote() {
 
         }
 
-        @Override
+        @Override //TODO NOT YET IMPLEMENTED
         public void addStudentAbsence() {
 
         }
 
-        @Override
+        @Override //TODO NOT YET IMPLEMENTED
         public void changeTeacherPassword() {
 
         }
-
 
 }

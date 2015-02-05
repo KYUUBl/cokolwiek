@@ -1,6 +1,3 @@
-import utils.AccountType;
-import utils.*;
-
 public interface StudentInterface {
 
         public void studentMain();
@@ -12,4 +9,6 @@ public interface StudentInterface {
         public void getStudentNotes();
 
         public void changeStudentPassword();
+
+        public void getStudentSchedule();
 }
