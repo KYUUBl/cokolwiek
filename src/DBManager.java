@@ -169,10 +169,10 @@ public class DBManager {
                 }
         }
 
-        public void addStudentNote(String studentID, int teacherID, String note, boolean isPositive, String data) {
+        public void addStudentNote(String studentID, int teacherID, String note, boolean isPositive, String date) {
                 try {
                         stmt = c.createStatement();
-                        stmt.executeUpdate("INSERT INTO uwagi(id_ucznia,id_nauczyciela,opis,czy_pozytywna,data_wystawienia) values('" + studentID + "'," + teacherID + ",'" + note + "'," + isPositive + ",to_date('" + data + "', 'DD.MM.YYYY'));");
+                        stmt.executeUpdate("INSERT INTO uwagi(id_ucznia,id_nauczyciela,opis,czy_pozytywna,data_wystawienia) values('" + studentID + "'," + teacherID + ",'" + note + "'," + isPositive + ",to_date('" + date + "', 'DD.MM.YYYY'));");
 //                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {

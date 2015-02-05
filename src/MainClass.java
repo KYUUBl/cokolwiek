@@ -103,7 +103,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 user.setId(null);
                                 user.setPassword(null);
                                 user.setAccountType(null);
-                                signIn();
+                                initApplication();
                 }
         }
 
@@ -633,19 +633,64 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         }
 
-        @Override //TODO NOT YET IMPLEMENTED
+        @Override //TODO NOT TESTED
         public void addStudentNote() {
 
+                System.out.println("Wybierz ucznia, któremu chcesz wystawić uwagę");
+                ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
+                for (int i = 0; i < students.size(); i++) {
+                        System.out.println("[" + i + "] " + students.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                String studentID = students.get(order).getX();
+
+                System.out.println("Podaj treść uwagi i zatwierdź ENTEREM:");
+                String note = scanner.nextLine(); //TODO CZY NA PEWNO NEXTLINE?
+
+                System.out.println("Czy uwaga jest pozytywna? ");
+                System.out.println("[1] TAK");
+                System.out.println("[0] NIE");
+                int orderForPositive = scanner.nextInt(); //TUTAJ UWAGA Z BOOLEANEM
+                boolean isPositive = orderForPositive == 1 ? true : false;
+                System.out.println("Podaj datę wystawienia");
+                String date = scanner.next();
+
+                dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date);
+                System.out.println("Dodano uwagę");
+                teacherMain();
         }
 
         @Override //TODO NOT YET IMPLEMENTED
         public void addStudentAbsence() {
-
+                System.out.println("Wybierz ucznia");
         }
 
-        @Override //TODO NOT YET IMPLEMENTED
-        public void changeTeacherPassword() {
+        @Override
+        public void changeTeacherPassword() { //TODO NOT TESTED
+                while (true) {
+                        System.out.println("Podaj stare hasło: ");
+                        String oldPassword = scanner.next();
+                        System.out.println("login: " + user.getId());
+                        System.out.println("haslo: " + oldPassword);
 
+                        if (user.getPassword().equals(oldPassword)) {
+                                break;
+                        } else {
+                                System.out.println("Podane hasło jest niepoprawne, spróbuj ponownie");
+                        }
+                }
+                String newPassword, newPassword1;
+                do {
+                        System.out.println("Podaj nowe hasło: ");
+                        newPassword = scanner.next();
+
+                        System.out.println("Zatwierdz nowe hasło: ");
+                        newPassword1 = scanner.next();
+                } while (!newPassword.equals(newPassword1) && newPassword != null);
+
+                dbManager.changeTeacherPassword(Integer.parseInt(user.getId()), newPassword);
+                user.setPassword(newPassword);
+                System.out.println("Hasło zostało zmienione");
+                teacherMain();
         }
-
 }
