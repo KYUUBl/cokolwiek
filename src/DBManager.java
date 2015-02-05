@@ -3,6 +3,7 @@
 import utils.AccountType;
 import utils.Pair;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -322,14 +323,16 @@ public class DBManager {
                         ResultSet rs = stmt.executeQuery("SELECT * from uzytkownicy join uczniowie on login=id_uzytkownika where login='" + login + "';");
                         while (rs.next()) {
                                 String pesel = rs.getString("pesel");
-                                if (!password.equals(rs.getString("haslo"))) return null;
-                                return new User(pesel, AccountType.STUDENT);
+                                String pass= rs.getString("haslo");
+                                if (!password.equals(pass)) return null;
+                                return new User(pesel, AccountType.STUDENT,pass);
                         }
                         rs = stmt.executeQuery("SELECT * from uzytkownicy join nauczyciele on login=id_uzytkownika where login='" + login + "';");
                         while (rs.next()) {
                                 int id = rs.getInt("id");
-                                if (!password.equals(rs.getString("haslo"))) return null;
-                                return new User(Integer.toString(id), AccountType.TEACHER);
+                                String pass= rs.getString("haslo");
+                                if (!password.equals(pass)) return null;
+                                return new User(Integer.toString(id), AccountType.TEACHER,pass);
                         }
                         return null;
                 } catch (Exception e) {
@@ -405,7 +408,7 @@ public class DBManager {
         public void changeStudentPassword(String pesel,String password){
                 try {
                         stmt = c.createStatement();
-                        stmt.executeUpdate("UPDATE uczniowie SET haslo = '" + password + "' where pesel='" + pesel + "';");
+                        stmt.executeUpdate("UPDATE uzytkownicy SET haslo = '"+password+"' from uzytkownicy uz join uczniowie on id_uzytkownika=uz.login where pesel='"+pesel+"';");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -415,7 +418,7 @@ public class DBManager {
         public void changeTeacherPassword(int id,String password){
                 try {
                         stmt = c.createStatement();
-                        stmt.executeUpdate("UPDATE uczniowie SET haslo = '" + password + "' where pesel=" + id + ";");
+                        stmt.executeUpdate("UPDATE uzytkownicy SET haslo = '"+password+"' from uzytkownicy uz join nauczyciele on id_uzytkownika=uz.login where id='"+id+"';");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -423,6 +426,46 @@ public class DBManager {
                 }
         }
 
+        public ArrayList<Pair<Integer,String> > getActivities(){
+                ArrayList<Pair<Integer,String> > activities = new ArrayList<Pair<Integer,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT id,nazwa from rodzaje_aktywnosci;");
+                        while (rs.next()) {
+                                Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),rs.getString("nazwa"));
+//                                System.out.println(pair.getX()+" "+pair.getY());
+                                activities.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return activities;
+        }
+
+        public ArrayList<Pair<Integer,String> > getLessonsByDate(String data){
+                ArrayList<Pair<Integer,String> > lessons = new ArrayList<Pair<Integer,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT pl.id,k.oddzial,k.rok_rozpoczecia,p.nazwa,pl.nr_lekcji from plan_lekcji pl join przedmioty p on pl.id_przedmiotu = p.id join klasy k on p.id_klasy = k.id where pl.dzien_tygodnia=extract(dow from to_date('" + data + "', 'DD.MM.YYYY'));");
+                        while (rs.next()) {
+                                Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),"godzina lekcyjna: "+rs.getInt("nr_lekcji") +" "+ rs.getString("nazwa") +" klasa: "+rs.getString("oddzial") + " " + rs.getInt("rok_rozpoczecia"));
+
+                                //System.out.println(pair.getX()+" "+pair.getY());
+                                lessons.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return lessons;
+        }
 
         public static void main(String args[])
         {
@@ -433,7 +476,8 @@ public class DBManager {
                 //System.out.printf("%-20s %s",a,b+"\n");
                 //System.out.printf("%-20s %s", b, c+"\n");
                 //System.out.printf("%-20s %s",c,a+"\n");
-                ArrayList<ArrayList<String> > shedule = dbManager.getLessonShedule("95091673574");
-                System.out.println(shedule);
+                //ArrayList<ArrayList<String> > shedule = dbManager.getLessonShedule("95091673574");
+                //System.out.println(shedule);
+                //dbManager.getLessonsByDate("12.12.2014");
         }
 }

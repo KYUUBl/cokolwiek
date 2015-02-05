@@ -188,7 +188,8 @@ INSERT INTO rodzaje_aktywnosci (nazwa, waga) VALUES
  ('kartkowka', 2),
  ('odpowiedz ustna', 3),
  ('aktywnosc lekcyjna', 1),
- ('zadanie domowe', 2);
+ ('zadanie domowe', 2),
+ ('wypracowanie', 4);
 
 INSERT INTO uzytkownicy(login,haslo) VALUES
  ('kamil','kamil'),
