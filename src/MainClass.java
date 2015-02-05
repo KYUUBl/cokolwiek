@@ -10,8 +10,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static utils.Constants.*;
 
@@ -101,11 +104,21 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 user.setPassword(null);
                                 user.setAccountType(null);
                                 signIn();
-
                 }
-
         }
 
+        public boolean checkDate(String date) {
+                if (!Pattern.matches("\\d{2}[.]\\d{2}[.]\\d{4}", date)) return false;
+                int dd = Integer.parseInt(date.substring(0, 2));
+                int mm = Integer.parseInt(date.substring(3, 5));
+                int rrrr = Integer.parseInt(date.substring(6, 10));
+                try {
+                        LocalDate.of(rrrr, mm, dd);
+                } catch (DateTimeException e) {
+                        return false;
+                }
+                return true;
+        }
 
         @Override
         public void studentMain() {
@@ -280,6 +293,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 for (int j = 0; j < 10; j++) {
                         System.out.printf("%-4d %-20s %-20s %-20s %-20s %s", j, shedule.get(0).get(j), shedule.get(1).get(j), shedule.get(2).get(j), shedule.get(3).get(j), shedule.get(4).get(j) + "\n");
                 }
+                System.out.println("Naciśnij enter, by kontynować");
                 studentMain();
         }
 
@@ -529,8 +543,36 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                 }
-
         }
+
+        @Override //TODO NOT YET IMPLEMENTED
+        public void addSubject() {
+                System.out.println("Podaj nazwę nowego przedmiotu");
+                String name = scanner.next();
+
+                System.out.println("Wybierz klasę:");
+                ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
+                System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
+                for (int i = 0; i < classes.size(); i++) {
+                        System.out.println("[" + i + "] " + classes.get(i).getY());
+                }
+                int orderClass = scanner.nextInt();
+                int classID = classes.get(orderClass).getX();
+
+                System.out.println("Wybierz nauczyciela przypisanego do przedmiotu");
+                ArrayList<Pair<Integer, String>> teachers = dbManager.getAllTeachers();
+                for (int i = 0; i < teachers.size(); i++) {
+                        System.out.println("[" + i + "] " + teachers.get(i).getY());
+                }
+                int orderTeacher = scanner.nextInt();
+                int teacherID = classes.get(orderTeacher).getX();
+
+                dbManager.addSubject(name, classID, teacherID);
+                System.out.println("Pomyślnie dodano przedmiot");
+                manageSchool();
+        }
+
+
 
 // ------------------------------------ END ------------------------------------ \\
 // ------------------------------------ TEACHER VIEW METHODS ------------------------------------ \\
@@ -560,11 +602,6 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         order = scanner.nextInt();
                 }
                 teacherMain();
-        }
-
-        @Override //TODO NOT YET IMPLEMENTED
-        public void addSubject() {
-
         }
 
         @Override //TODO NOT YET IMPLEMENTED
