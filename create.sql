@@ -290,9 +290,6 @@ INSERT INTO przedmioty (nazwa, id_prowadzacego, id_klasy,aktywny) VALUES
  ('Matematyka2', 1, 4, TRUE),
  ('Matematyka2', 1, 5, TRUE),
  ('Matematyka3', 1, 6, TRUE),
- ('Matematyka2', 1, 6, FALSE),
- ('Matematyka1', 1, 4, FALSE),
- ('Matematyka1', 1, 6, FALSE),
  ('Jezyk polski1', 2, 1, TRUE),
  ('Jezyk polski1', 2, 2, TRUE),
  ('Jezyk polski3', 2, 3, TRUE),
@@ -326,9 +323,12 @@ INSERT INTO przedmioty (nazwa, id_prowadzacego, id_klasy,aktywny) VALUES
  ('Religia3', 10, 3, TRUE),
  ('Religia2', 11, 4, TRUE),
  ('Religia2', 11, 5, TRUE),
+ ('Religia3', 11, 6, TRUE),
  ('Religia1', 11, 4, FALSE),
  ('Religia1', 11, 5, FALSE),
- ('Religia3', 11, 6, TRUE);
+ ('Matematyka2', 1, 6, FALSE),
+ ('Matematyka1', 1, 4, FALSE),
+ ('Matematyka1', 1, 6, FALSE);
 
 INSERT INTO uczniowie (imie, nazwisko, telefon_do_rodzica, pesel, id_klasy,aktywny) VALUES
  ('Llrbbmqb', 'Mdarzow', 140383426, 96091227824, 5, TRUE),
@@ -769,23 +769,23 @@ INSERT INTO uwagi (id_ucznia, id_nauczyciela, opis, czy_pozytywna, data_wystawie
  (6, '97030656297', 1, 1,'logika'),
  (2, '96051382936', 1, 1,'logika'),
  (2, '96051382936', 1, 1,'logika'),
- (4, '95080123574', 7, 3,'antyk'),
- (5, '95080123574', 7, 4,'polska'),
- (3, '96032315157', 7, 3,'polska'),
- (3, '96121214718', 7, 3,'lalka'),
- (1, '96121214718', 7, 5,'antyk'),
+ (4, '95080123574', 6, 3,'antyk'),
+ (5, '95080123574', 6, 4,'polska'),
+ (3, '96032315157', 6, 3,'polska'),
+ (3, '96121214718', 6, 3,'lalka'),
+ (1, '96121214718', 6, 5,'antyk'),
  (1, '95091673574', 5, 5,'test'),
- (1, '95091673574', 14, 5,'dzuma'),
+ (1, '95091673574', 11, 5,'dzuma'),
  (1, '95091673574', 22, 1,'Karboksyhemoglobina'),
- (5, '96022821662', 7, 3,'przediowsnie');
+ (5, '96022821662', 6, 3,'przediowsnie');
 
 INSERT INTO nieobecnosci(id_ucznia,id_lekcji) VALUES
  (97041054897,1),
  (97081779471,1),
  (95020374257,1),
- (96080786581,18),
- (96112772823,18),
- (95072417689,18),
+ (96080786581,9),
+ (96112772823,9),
+ (95072417689,9),
  (97042933434,17),
  (97112593137,16),
  (95042777524,14),
@@ -796,7 +796,7 @@ INSERT INTO nieobecnosci(id_ucznia,id_lekcji) VALUES
  (95072279579,10),
  (97101943857,10),
  (95091673574,13),
- (97111439528,8);
+ (97111439528,18);
 
 
 UPDATE uczniowie SET id_uzytkownika='UNMY7J' where pesel = '96091227824'	;

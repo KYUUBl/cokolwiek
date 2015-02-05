@@ -113,17 +113,18 @@ public class DBManager {
                 return subjects;
         }
 
-        public ArrayList<String> getTeacherSubjects(int teacherID) {
-                ArrayList<String> subjects = new ArrayList<String>();
+        public ArrayList<Pair<Integer,String> > getTeacherSubjects(int teacherID) {
+                ArrayList<Pair<Integer,String> > subjects = new ArrayList<Pair<Integer,String> >();
                 try {
                         stmt = c.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT nazwa,oddzial,rok_rozpoczecia from przedmioty p join klasy k on p.id_klasy=k.id where aktywny=true and id_prowadzacego='" + teacherID + "';");
+                        ResultSet rs = stmt.executeQuery("SELECT p.id,nazwa,oddzial,rok_rozpoczecia from przedmioty p join klasy k on p.id_klasy=k.id where aktywny=true and id_prowadzacego='" + teacherID + "';");
                         while (rs.next()) {
+                                Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),rs.getString("nazwa") + " klasa: " + rs.getString("oddzial") + " " + rs.getInt("rok_rozpoczecia"));
                                 String name = rs.getString("nazwa");
                                 String section = rs.getString("oddzial");
                                 int startYear = rs.getInt("rok_rozpoczecia");
 //                                System.out.println(name + " klasa " + startYear + section);
-                                subjects.add(name + " klasa " + startYear + section);
+                                subjects.add(pair);
                         }
 //                        System.out.println("success");
                         rs.close();
@@ -135,8 +136,8 @@ public class DBManager {
                 return subjects;
         }
 
-        public ArrayList<String> getSubjectStudents(int subjectID) {
-                ArrayList<String> students = new ArrayList<String>();
+        public ArrayList<Pair<String,String> > getSubjectStudents(int subjectID) {
+                ArrayList<Pair<String,String> > students = new ArrayList<Pair<String,String> >();
                 try {
                         stmt = c.createStatement();
                         ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,pesel from przedmioty p join klasy k on p.id_klasy=k.id join uczniowie u on u.id_klasy=k.id where p.id='" + subjectID + "';");
@@ -144,8 +145,9 @@ public class DBManager {
                                 String name = rs.getString("imie");
                                 String lastname = rs.getString("nazwisko");
                                 String pesel = rs.getString("pesel");
+                                Pair<String,String> pair = new Pair<String, String>(rs.getString("pesel"),rs.getString("imie")+ " " + rs.getString("nazwisko"));
 //                                System.out.println(name + " " + lastname + " " + pesel);
-                                students.add(name + " " + lastname + " " + pesel);
+                                students.add(pair);
                         }
 //                        System.out.println("success");
                         rs.close();
@@ -337,8 +339,43 @@ public class DBManager {
                 return null;
         }
 
+        public ArrayList getLessonShedule(String pesel){
+                ArrayList<ArrayList<String> > shedule = new ArrayList<ArrayList<String>>();
+                for(int i=0;i<5;i++){
+                        shedule.add(new ArrayList<String>());
+                }
+                try {
 
-        public static void main(String args[]) {
+                        for(int i=2;i<=6;i++){
+                                stmt = c.createStatement();
+                                ResultSet rs = stmt.executeQuery("select p.nazwa,pl.nr_lekcji from plan_lekcji pl join przedmioty p on pl.id_przedmiotu = p.id join klasy k on p.id_klasy = k.id join uczniowie u on k.id=u.id_klasy where dzien_tygodnia = "+i+" and u.pesel = '"+pesel+"' order by pl.nr_lekcji;");
+                                while (rs.next()) {
+                                        shedule.get(i-2).add(rs.getInt("nr_lekcji")+"."+rs.getString("nazwa"));
+                                }
+                                rs.close();
+                                stmt.close();
+                        }
+
+//                        System.out.println("success");
+
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return shedule;
+        }
+
+
+        public static void main(String args[])
+        {
                 DBManager dbManager = new DBManager();
+                //String a = "to ja a to nie ja";
+                //String b = "kurwa mac";
+                //String c = "a owszem nie";
+                //System.out.printf("%-20s %s",a,b+"\n");
+                //System.out.printf("%-20s %s", b, c+"\n");
+                //System.out.printf("%-20s %s",c,a+"\n");
+                ArrayList<ArrayList<String> > shedule = dbManager.getLessonShedule("95091673574");
+                System.out.println(shedule);
         }
 }
