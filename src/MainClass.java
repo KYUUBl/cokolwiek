@@ -293,9 +293,13 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         newPassword1 = scanner.next();
                 } while (!newPassword.equals(newPassword1));
 
-                dbManager.changeStudentPassword(user.getId(), newPassword);
-                user.setPassword(newPassword);
-                System.out.println("Hasło zostało zmienione");
+                boolean result = dbManager.changeStudentPassword(user.getId(), newPassword);
+                if (result) {
+                        user.setPassword(newPassword);
+                        System.out.println("Hasło zostało zmienione");
+                } else {
+                        System.out.println("Nie udało się zmienić hasła");
+                }
                 studentMain();
         }
 
@@ -350,7 +354,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 adminMain();
         }
 
-        @Override
+        @Override //TODO Nie da się wyjść z pętli, jakieś wyjście?
         public void manageDatabase() {
                 while (true) {
                         System.out.println("Dodaj nowego użytkownika:");
@@ -373,7 +377,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 }
         }
 
-        @Override
+        @Override //TODO Nie da się wyjść z pętli, jakieś wyjście?
         public void manageSchool() {
                 while (true) {
                         System.out.println("Wybierz działanie:");
@@ -429,11 +433,16 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 ArrayList<Pair<String, String>> students = dbManager.getStudentsWithoutUser();
                 int order = orderFromList1(students);
                 String studentId = students.get(order).getX();
-                dbManager.addStudentUser(login, password, studentId); //TU SIĘ MOŻE JEBAC
-                System.out.println("Dodano użytkownika:");
-                System.out.println("login: " + login);
-                System.out.println("haslo: " + password);
-                System.out.println("Dla ucznia: " + students.get(order).getY());
+                boolean result = dbManager.addStudentUser(login, password, studentId);
+                if (result) {
+                        System.out.println("Dodano użytkownika:");
+                        System.out.println("login: " + login);
+                        System.out.println("haslo: " + password);
+                        System.out.println("Dla ucznia: " + students.get(order).getY());
+                } else {
+                        System.out.println("Nie udało się dodać ucznia");
+                }
+
                 manageDatabase();
         }
 
@@ -449,11 +458,15 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getTeachersWithoutUser();
                 int order = orderFromList(teachers);
                 Integer teacherId = teachers.get(order).getX();
-                dbManager.addTeacherUser(login, password, teacherId); //TU SIĘ MOŻE JEBAC
-                System.out.println("Dodano użytkownika:");
-                System.out.println("login: " + login);
-                System.out.println("haslo: " + password);
-                System.out.println("Dla nauczyciela: " + teachers.get(order).getY());
+                boolean result = dbManager.addTeacherUser(login, password, teacherId); //TU SIĘ MOŻE JEBAC
+                if (result) {
+                        System.out.println("Dodano użytkownika:");
+                        System.out.println("login: " + login);
+                        System.out.println("haslo: " + password);
+                        System.out.println("Dla nauczyciela: " + teachers.get(order).getY());
+                } else {
+                        System.out.println("Nie udało się dodać użytkownika");
+                }
                 manageDatabase();
         }
 
@@ -472,8 +485,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
                 int order = orderFromList(classes);
                 int classID = classes.get(order).getX();
-                dbManager.addStudent(name, lastname, pesel, phoneNumber, classID); //TU SIĘ MOŻE JEBAC
-                System.out.println("Pomyslnie dodano ucznia");
+                boolean result = dbManager.addStudent(name, lastname, pesel, phoneNumber, classID);
+                if (result) System.out.println("Pomyslnie dodano ucznia");
+                else System.out.println("Nie udało się dodać ucznia");
                 manageSchool();
 
         }
@@ -484,8 +498,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
                 int order = orderFromList1(students);
                 String userID = students.get(order).getX();
-                dbManager.deactivateStudent(userID);
-                System.out.println("Pomyślnie deaktywowano studenta");
+                boolean result = dbManager.deactivateStudent(userID);
+                if (result) System.out.println("Pomyślnie deaktywowano studenta");
+                else System.out.println("Nie udało się deaktywować studenta");
                 manageSchool();
         }
 
@@ -495,8 +510,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String name = scanner.next();
                 System.out.print("Podaj nazwisko: ");
                 String lastname = scanner.next();
-                dbManager.addTeacher(name, lastname); //TU SIĘ MOŻE JEBAC
-                System.out.println("Dodano nauczyciela. \n");
+                boolean result = dbManager.addTeacher(name, lastname); //TU SIĘ MOŻE JEBAC
+                if (result) System.out.println("Dodano nauczyciela. \n");
+                else System.out.println("Nie udało się dodać nauczyciela");
                 manageSchool();
         }
 
@@ -507,8 +523,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("[1] TAK");
                 int order = scanner.nextInt();
                 if (order == 1) {
-                        System.out.println("Zakonczono rok szkolny");
-                        dbManager.yearEnd();
+                        boolean result = dbManager.yearEnd();
+                        if (result) System.out.println("Zakonczono rok szkolny");
+                        else System.out.println("Nie udało się zakończyć roku szkolnego");
                 } else {
                         System.out.println("Powracam do zarządzania szkołą");
                         manageSchool();
@@ -552,7 +569,10 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String section = scanner.next();
                 System.out.println("Podaj rocznik rozpoczęcia");
                 int startYear = scanner.nextInt();
-                dbManager.addclass(section, startYear, tutorId);
+                boolean result = dbManager.addclass(section, startYear, tutorId);
+                if (result) System.out.println("Pomyślnie dodano klasę");
+                else System.out.println("Nie udało się dodać klasy");
+                manageSchool();
         }
 
         @Override
@@ -571,8 +591,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 order = orderFromList(teachers);
                 int teacherID = classes.get(order).getX();
 
-                dbManager.addSubject(name, classID, teacherID); //TU SIĘ MOŻE JEBAC
-                System.out.println("Pomyślnie dodano przedmiot");
+                boolean result = dbManager.addSubject(name, classID, teacherID);
+                if (result) System.out.println("Pomyślnie dodano przedmiot");
+                else System.out.println("Nie udało się dodać przedmiotu");
                 manageSchool();
         }
 
@@ -643,7 +664,10 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 int value = scanner.nextInt();
                 System.out.println("podaj temat");
                 String topic = scanner.next();
-                dbManager.addStudentGrade(subjectId, studentId, value, activityId, topic); //TU SIĘ MOŻE JEBAC
+                boolean result = dbManager.addStudentGrade(subjectId, studentId, value, activityId, topic);
+                if (result) System.out.println("Pomyślnie dodano ocenę");
+                else System.out.println("Nie udało się dodać oceny");
+
                 teacherMain();
         }
 
@@ -667,8 +691,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Podaj datę wystawienia");
                 String date = scanner.next();
 
-                dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date); //TU SIĘ MOŻE JEBAC
-                System.out.println("Dodano uwagę");
+                boolean result = dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date); //TU SIĘ MOŻE JEBAC
+                if (result) System.out.println("Dodano uwagę");
+                else System.out.println("Nie udało się dodać uwagi");
                 teacherMain();
         }
 
@@ -687,7 +712,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
                 order = orderFromList1(students);
                 while (order >= 0) {
-                        dbManager.addStudentAbsence(students.get(order).getX(), lID); //TU SIĘ MOŻE JEBAC
+                        boolean result = dbManager.addStudentAbsence(students.get(order).getX(), lID);
+                        if (result) System.out.println("Dodano nieobecność");
+                        else System.out.println("Nie udało się dodać nieobecności");
                         order = scanner.nextInt();
                 }
                 teacherMain();
@@ -728,9 +755,11 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         newPassword1 = scanner.next();
                 } while (!newPassword.equals(newPassword1) && newPassword != null);
 
-                dbManager.changeTeacherPassword(Integer.parseInt(user.getId()), newPassword); //TU SIĘ MOŻE JEBAC
-                user.setPassword(newPassword);
-                System.out.println("Hasło zostało zmienione");
+                boolean result = dbManager.changeTeacherPassword(Integer.parseInt(user.getId()), newPassword);
+                if (result) {
+                        user.setPassword(newPassword);
+                        System.out.println("Hasło zostało zmienione");
+                } else System.out.println("Nie udało się zmienić hasła");
                 teacherMain();
         }
 }
