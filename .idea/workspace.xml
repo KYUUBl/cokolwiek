@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4345acad-2b70-48b9-ae92-f84a5870901c" name="Default" comment="Again and again for fuck's sake">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/cokolwiek/TeacherInterface.class" afterPath="$PROJECT_DIR$/out/production/cokolwiek/TeacherInterface.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainClass.java" afterPath="$PROJECT_DIR$/src/MainClass.java" />
+    <list default="true" id="4345acad-2b70-48b9-ae92-f84a5870901c" name="Default" comment="Added method that handles choices from lists.">
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\AdminInterface.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\DBManager.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\MainClass$1.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\MainClass.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\StudentInterface.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\TeacherInterface.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\User.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\utils\AccountType.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\utils\Constants.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Kamil\Desktop\cokolwiek\out\production\cokolwiek\utils\Pair.class" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cokolwiek.iws" />
@@ -29,10 +37,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainClass.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainClass.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MainClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.93586385" vertical-offset="3996" max-vertical-offset="5474">
+            <state vertical-scroll-proportion="24.655172" vertical-offset="3996" max-vertical-offset="5474">
               <caret line="557" column="45" selection-start-line="557" selection-start-column="45" selection-end-line="557" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -67,7 +75,7 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="34.76" vertical-offset="869" max-vertical-offset="1547">
+            <state vertical-scroll-proportion="34.76" vertical-offset="869" max-vertical-offset="986">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -161,13 +169,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBManager.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DBManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DBManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.51724" vertical-offset="8973" max-vertical-offset="10115">
-              <caret line="563" column="98" selection-start-line="563" selection-start-column="98" selection-end-line="563" selection-end-column="98" />
+            <state vertical-scroll-proportion="0.4223301" vertical-offset="9750" max-vertical-offset="10574">
+              <caret line="601" column="91" selection-start-line="601" selection-start-column="91" selection-end-line="601" selection-end-column="91" />
               <folding>
-                <element signature="imports" expanded="false" />
                 <element signature="e#5436#5453#0" expanded="true" />
                 <element signature="e#6609#6626#0" expanded="true" />
                 <element signature="e#8292#8308#0" expanded="true" />
@@ -186,6 +193,7 @@
                 <element signature="e#30675#30692#0" expanded="true" />
                 <element signature="e#31432#31455#0" expanded="true" />
                 <element signature="e#31748#31765#0" expanded="true" />
+                <element signature="e#32512#32531#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -366,7 +374,9 @@
             <option name="mySupportsDeletion" value="false" />
             <option name="myCanBeAbsent" value="false" />
             <option name="myId" value="UPDATED" />
+            <PATH vcs="Git" revision="">$PROJECT_DIR$/clear.sql</PATH>
             <PATH vcs="Git" revision="">$PROJECT_DIR$/create.sql</PATH>
+            <PATH vcs="Git" revision="">$PROJECT_DIR$/src/DBManager.java</PATH>
           </FILE-GROUP>
           <FILE-GROUP>
             <option name="myUpdateName" value="Created" />
@@ -734,7 +744,13 @@
       <option name="project" value="LOCAL" />
       <updated>1423158290452</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added method that handles choices from lists.">
+      <created>1423161205313</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1423161205313</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -750,8 +766,8 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16991644" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2376973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="213" width="1920" height="369" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16991644" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2376973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="213" width="1920" height="369" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11354167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -817,7 +833,8 @@
     <MESSAGE value="A Few methods implemented. Code reformatted." />
     <MESSAGE value="Even more methods implemented" />
     <MESSAGE value="Again and again for fuck's sake" />
-    <option name="LAST_COMMIT_MESSAGE" value="Again and again for fuck's sake" />
+    <MESSAGE value="Added method that handles choices from lists." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added method that handles choices from lists." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -931,7 +948,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="6681" max-vertical-offset="8177">
           <caret line="401" column="17" selection-start-line="401" selection-start-column="17" selection-end-line="401" selection-end-column="17" />
           <folding>
-            <element signature="imports" expanded="false" />
             <element signature="e#5436#5453#0" expanded="true" />
             <element signature="e#6609#6626#0" expanded="true" />
             <element signature="e#8292#8308#0" expanded="true" />
@@ -950,6 +966,7 @@
             <element signature="e#30675#30692#0" expanded="true" />
             <element signature="e#31432#31455#0" expanded="true" />
             <element signature="e#31748#31765#0" expanded="true" />
+            <element signature="e#32512#32531#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1032,7 +1049,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1885" max-vertical-offset="6460">
           <caret line="138" column="47" selection-start-line="138" selection-start-column="47" selection-end-line="138" selection-end-column="47" />
           <folding>
-            <element signature="imports" expanded="false" />
             <element signature="e#5436#5453#0" expanded="true" />
             <element signature="e#6609#6626#0" expanded="true" />
             <element signature="e#8292#8308#0" expanded="true" />
@@ -1051,6 +1067,7 @@
             <element signature="e#30675#30692#0" expanded="true" />
             <element signature="e#31432#31455#0" expanded="true" />
             <element signature="e#31748#31765#0" expanded="true" />
+            <element signature="e#32512#32531#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1117,7 +1134,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="6460">
           <caret line="21" column="36" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="36" />
           <folding>
-            <element signature="imports" expanded="false" />
             <element signature="e#5436#5453#0" expanded="true" />
             <element signature="e#6609#6626#0" expanded="true" />
             <element signature="e#8292#8308#0" expanded="true" />
@@ -1136,6 +1152,7 @@
             <element signature="e#30675#30692#0" expanded="true" />
             <element signature="e#31432#31455#0" expanded="true" />
             <element signature="e#31748#31765#0" expanded="true" />
+            <element signature="e#32512#32531#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1186,7 +1203,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="5414" max-vertical-offset="6290">
           <caret line="347" column="18" selection-start-line="347" selection-start-column="18" selection-end-line="347" selection-end-column="18" />
           <folding>
-            <element signature="imports" expanded="false" />
             <element signature="e#5436#5453#0" expanded="true" />
             <element signature="e#6609#6626#0" expanded="true" />
             <element signature="e#8292#8308#0" expanded="true" />
@@ -1205,6 +1221,7 @@
             <element signature="e#30675#30692#0" expanded="true" />
             <element signature="e#31432#31455#0" expanded="true" />
             <element signature="e#31748#31765#0" expanded="true" />
+            <element signature="e#32512#32531#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1255,7 +1272,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="5414" max-vertical-offset="6290">
           <caret line="347" column="18" selection-start-line="347" selection-start-column="18" selection-end-line="347" selection-end-column="18" />
           <folding>
-            <element signature="imports" expanded="false" />
             <element signature="e#5436#5453#0" expanded="true" />
             <element signature="e#6609#6626#0" expanded="true" />
             <element signature="e#8292#8308#0" expanded="true" />
@@ -1274,6 +1290,7 @@
             <element signature="e#30675#30692#0" expanded="true" />
             <element signature="e#31432#31455#0" expanded="true" />
             <element signature="e#31748#31765#0" expanded="true" />
+            <element signature="e#32512#32531#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1409,34 +1426,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DBManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.51724" vertical-offset="8973" max-vertical-offset="10115">
-          <caret line="563" column="98" selection-start-line="563" selection-start-column="98" selection-end-line="563" selection-end-column="98" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#5436#5453#0" expanded="true" />
-            <element signature="e#6609#6626#0" expanded="true" />
-            <element signature="e#8292#8308#0" expanded="true" />
-            <element signature="e#19017#19036#0" expanded="true" />
-            <element signature="e#21006#21022#0" expanded="true" />
-            <element signature="e#21775#21798#0" expanded="true" />
-            <element signature="e#22120#22137#0" expanded="true" />
-            <element signature="e#24942#24959#0" expanded="true" />
-            <element signature="e#26205#26222#0" expanded="true" />
-            <element signature="e#27070#27092#0" expanded="true" />
-            <element signature="e#27583#27599#0" expanded="true" />
-            <element signature="e#28342#28365#0" expanded="true" />
-            <element signature="e#29152#29174#0" expanded="true" />
-            <element signature="e#29467#29483#0" expanded="true" />
-            <element signature="e#30238#30261#0" expanded="true" />
-            <element signature="e#30675#30692#0" expanded="true" />
-            <element signature="e#31432#31455#0" expanded="true" />
-            <element signature="e#31748#31765#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/TeacherInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
@@ -1447,7 +1436,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.93586385" vertical-offset="3996" max-vertical-offset="5474">
+        <state vertical-scroll-proportion="24.655172" vertical-offset="3996" max-vertical-offset="5474">
           <caret line="557" column="45" selection-start-line="557" selection-start-column="45" selection-end-line="557" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1474,6 +1463,34 @@
             <element signature="method#endSchoolYear#0;class#MainClass#0" expanded="false" />
             <element signature="method#changeAdminPassword#0;class#MainClass#0" expanded="false" />
             <element signature="method#teacherMain#0;class#MainClass#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4223301" vertical-offset="9750" max-vertical-offset="10574">
+          <caret line="601" column="91" selection-start-line="601" selection-start-column="91" selection-end-line="601" selection-end-column="91" />
+          <folding>
+            <element signature="e#5436#5453#0" expanded="true" />
+            <element signature="e#6609#6626#0" expanded="true" />
+            <element signature="e#8292#8308#0" expanded="true" />
+            <element signature="e#19017#19036#0" expanded="true" />
+            <element signature="e#21006#21022#0" expanded="true" />
+            <element signature="e#21775#21798#0" expanded="true" />
+            <element signature="e#22120#22137#0" expanded="true" />
+            <element signature="e#24942#24959#0" expanded="true" />
+            <element signature="e#26205#26222#0" expanded="true" />
+            <element signature="e#27070#27092#0" expanded="true" />
+            <element signature="e#27583#27599#0" expanded="true" />
+            <element signature="e#28342#28365#0" expanded="true" />
+            <element signature="e#29152#29174#0" expanded="true" />
+            <element signature="e#29467#29483#0" expanded="true" />
+            <element signature="e#30238#30261#0" expanded="true" />
+            <element signature="e#30675#30692#0" expanded="true" />
+            <element signature="e#31432#31455#0" expanded="true" />
+            <element signature="e#31748#31765#0" expanded="true" />
+            <element signature="e#32512#32531#0" expanded="true" />
           </folding>
         </state>
       </provider>
