@@ -236,14 +236,20 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override
         public void addStudentGrade() { //TODO Dokonczyc ten shit
-            System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
-            ArrayList<String> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
-            for(int i = 0; i<subjects.size(); i++) {
-                System.out.println("[" + i + "] " + subjects.get(i));
-            }
-            int order = scanner.nextInt();
+                System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
+                ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
+                for (int i = 0; i < subjects.size(); i++) {
+                        System.out.println("[" + i + "] " + subjects.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                int subjectId = subjects.get(order).getX();
 
-            dbManager.getSubjectStudents()
+                ArrayList<Pair<String, String>> studentsBySubject = dbManager.getSubjectStudents(subjectId);
+                for (int i = 0; i < studentsBySubject.size(); i++) {
+                        System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
+                }
+                //int
+
 
         }
 
