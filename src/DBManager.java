@@ -402,6 +402,26 @@ public class DBManager {
                 }
                 return teachers;
         }
+        public void changeStudentPassword(String pesel,String password){
+                try {
+                        stmt = c.createStatement();
+                        stmt.executeUpdate("UPDATE uczniowie SET haslo = '" + password + "' where pesel='" + pesel + "';");
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+        }
+        public void changeTeacherPassword(int id,String password){
+                try {
+                        stmt = c.createStatement();
+                        stmt.executeUpdate("UPDATE uczniowie SET haslo = '" + password + "' where pesel=" + id + ";");
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+        }
 
 
         public static void main(String args[])
