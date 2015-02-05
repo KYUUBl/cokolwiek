@@ -196,16 +196,21 @@ public class DBManager {
                 }
         }
 
-        public void addCompletedLesson(String data, int teacherID, int lessonID, String topic) {
+        public int addCompletedLesson(String data, int teacherID, int lessonID, String topic) {
+                int i=-1;
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO przeprowadzone_lekcje(data,id_prowadzacego,id_lekcji,temat_zajec) values(to_date('" + data + "', 'DD.MM.YYYY')," + teacherID + "," + lessonID + ",'" + topic + "');");
 //                        System.out.println("success");
+                        ResultSet rs = stmt.executeQuery("select lastval();");
+                        rs.next();
+                        i=rs.getInt(1);
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
                         System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 }
+                return i;
         }
 
         public void addStudent(String name, String lastname, String pesel, int phoneNumber, int classID) {
@@ -408,7 +413,12 @@ public class DBManager {
         public void changeStudentPassword(String pesel,String password){
                 try {
                         stmt = c.createStatement();
-                        stmt.executeUpdate("UPDATE uzytkownicy SET haslo = '"+password+"' from uzytkownicy uz join uczniowie on id_uzytkownika=uz.login where pesel='"+pesel+"';");
+                        ResultSet rs = stmt.executeQuery("select id_uzytkownika from uzytkownicy uz join uczniowie on id_uzytkownika=uz.login where pesel='" + pesel + "';");
+                        rs.next();
+                        String userID = rs.getString("id_uzytkownika");
+                        stmt.close();
+                        stmt = c.createStatement();
+                        stmt.executeUpdate("UPDATE uzytkownicy SET haslo = '"+password+"' where login='"+userID+"';");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -418,7 +428,12 @@ public class DBManager {
         public void changeTeacherPassword(int id,String password){
                 try {
                         stmt = c.createStatement();
-                        stmt.executeUpdate("UPDATE uzytkownicy SET haslo = '"+password+"' from uzytkownicy uz join nauczyciele on id_uzytkownika=uz.login where id='"+id+"';");
+                        ResultSet rs = stmt.executeQuery("select id_uzytkownika from uzytkownicy uz join nauczyciele on id_uzytkownika=uz.login where id=" + id + ";");
+                        rs.next();
+                        String userID = rs.getString("id_uzytkownika");
+                        stmt.close();
+                        stmt = c.createStatement();
+                        stmt.executeUpdate("UPDATE uzytkownicy SET haslo = '"+password+"' where login = '"+userID+"';");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -450,7 +465,8 @@ public class DBManager {
                 ArrayList<Pair<Integer,String> > lessons = new ArrayList<Pair<Integer,String> >();
                 try {
                         stmt = c.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT pl.id,k.oddzial,k.rok_rozpoczecia,p.nazwa,pl.nr_lekcji from plan_lekcji pl join przedmioty p on pl.id_przedmiotu = p.id join klasy k on p.id_klasy = k.id where pl.dzien_tygodnia=extract(dow from to_date('" + data + "', 'DD.MM.YYYY'));");
+
+                        ResultSet rs = stmt.executeQuery("SELECT pl.id,k.oddzial,k.rok_rozpoczecia,p.nazwa,pl.nr_lekcji from plan_lekcji pl join przedmioty p on pl.id_przedmiotu = p.id join klasy k on p.id_klasy = k.id where pl.dzien_tygodnia=extract(dow from to_date('" + data + "', 'DD.MM.YYYY'))+1;");
                         while (rs.next()) {
                                 Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),"godzina lekcyjna: "+rs.getInt("nr_lekcji") +" "+ rs.getString("nazwa") +" klasa: "+rs.getString("oddzial") + " " + rs.getInt("rok_rozpoczecia"));
 
@@ -467,6 +483,27 @@ public class DBManager {
                 return lessons;
         }
 
+        public ArrayList<Pair<String,String> > getStudentsByLesson(int lessonID){
+                ArrayList<Pair<String,String> > students = new ArrayList<Pair<String,String> >();
+                try {
+                        stmt = c.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT imie,nazwisko,pesel from uczniowie u join klasy k on k.id =u.id_klasy join przedmioty p on p.id_klasy=k.id join plan_lekcji pl on pl.id_przedmiotu =p.id join przeprowadzone_lekcje p_l on pl.id=p_l.id_lekcji where p_l.id="+lessonID+";");
+                        while (rs.next()) {
+                                Pair<String,String> pair = new Pair<String, String>(rs.getString("pesel"),rs.getString("imie")+" "+rs.getString("nazwisko"));
+//                                System.out.println(pair.getX()+" "+pair.getY());
+                                students.add(pair);
+                        }
+//                        System.out.println("success");
+                        rs.close();
+                        stmt.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                }
+                return students;
+        }
+
+
         public static void main(String args[])
         {
                 DBManager dbManager = new DBManager();
@@ -476,8 +513,6 @@ public class DBManager {
                 //System.out.printf("%-20s %s",a,b+"\n");
                 //System.out.printf("%-20s %s", b, c+"\n");
                 //System.out.printf("%-20s %s",c,a+"\n");
-                //ArrayList<ArrayList<String> > shedule = dbManager.getLessonShedule("95091673574");
-                //System.out.println(shedule);
-                //dbManager.getLessonsByDate("12.12.2014");
+                dbManager.changeStudentPassword("95091673574","kamil");
         }
 }
