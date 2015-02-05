@@ -19,7 +19,7 @@ public class DBManager {
                         c = DriverManager
                                 .getConnection("jdbc:postgresql://localhost:5432/School register",
                                         "postgres", "kamil");
-                        System.out.println("Opened database successfully");
+//                        System.out.println("Opened database successfully");
                 } catch (Exception e) {
                         e.printStackTrace();
                         System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -36,10 +36,10 @@ public class DBManager {
                                 int value = rs.getInt("wartosc");
                                 String topic = rs.getString("tematyka");
                                 String name = rs.getString("nazwa");
-                                System.out.println(topic + " " + name + " " + value);
+//                                System.out.println(topic + " " + name + " " + value);
                                 grades.add(topic + " " + name + " " + value);
                         }
-                        System.out.println("success");
+//                        System.out.println("success");
                         rs.close();
                         stmt.close();
                 } catch (Exception e) {
@@ -57,10 +57,10 @@ public class DBManager {
                         while (rs.next()) {
                                 String date = rs.getDate("data").toString();
                                 int lesson = rs.getInt("nr_lekcji");
-                                System.out.println(date + " lekcja nr: " + lesson);
+//                                System.out.println(date + " lekcja nr: " + lesson);
                                 absences.add(date + " lekcja nr: " + lesson);
                         }
-                        System.out.println("success");
+//                        System.out.println("success");
                         rs.close();
                         stmt.close();
                 } catch (Exception e) {
@@ -79,10 +79,10 @@ public class DBManager {
                                 String description = rs.getString("opis");
                                 String date = rs.getDate("data_wystawienia").toString();
                                 boolean positive = rs.getBoolean("czy_pozytywna");
-                                System.out.println(date + " " + positive + ": " + description);
+//                                System.out.println(date + " " + positive + ": " + description);
                                 notes.add(date + " " + positive + ": " + description);
                         }
-                        System.out.println("success");
+//                        System.out.println("success");
                         rs.close();
                         stmt.close();
                 } catch (Exception e) {
@@ -100,10 +100,10 @@ public class DBManager {
                         while (rs.next()) {
                                 Pair<Integer,String> pair = new Pair<Integer, String>(rs.getInt("id"),rs.getString("nazwa"));
 
-                                System.out.println(pair.getX()+" "+pair.getY());
+//                                System.out.println(pair.getX()+" "+pair.getY());
                                 subjects.add(pair);
                         }
-                        System.out.println("success");
+//                        System.out.println("success");
                         rs.close();
                         stmt.close();
                 } catch (Exception e) {
@@ -122,10 +122,10 @@ public class DBManager {
                                 String name = rs.getString("nazwa");
                                 String section = rs.getString("oddzial");
                                 int startYear = rs.getInt("rok_rozpoczecia");
-                                System.out.println(name + " klasa " + startYear + section);
+//                                System.out.println(name + " klasa " + startYear + section);
                                 subjects.add(name + " klasa " + startYear + section);
                         }
-                        System.out.println("success");
+//                        System.out.println("success");
                         rs.close();
                         stmt.close();
                 } catch (Exception e) {
@@ -144,10 +144,10 @@ public class DBManager {
                                 String name = rs.getString("imie");
                                 String lastname = rs.getString("nazwisko");
                                 String pesel = rs.getString("pesel");
-                                System.out.println(name + " " + lastname + " " + pesel);
+//                                System.out.println(name + " " + lastname + " " + pesel);
                                 students.add(name + " " + lastname + " " + pesel);
                         }
-                        System.out.println("success");
+//                        System.out.println("success");
                         rs.close();
                         stmt.close();
                 } catch (Exception e) {
@@ -161,7 +161,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO oceny_uczniow(id_przedmiotu,id_ucznia,wartosc,id_aktywnosci,tematyka) values(" + subjectID + "," + studentID + "," + gradeValue + "," + activityID + ",'" + topic + "');");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -173,7 +173,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO uwagi(id_ucznia,id_nauczyciela,opis,czy_pozytywna,data_wystawienia) values('" + studentID + "'," + teacherID + ",'" + note + "'," + isPositive + ",to_date('" + data + "', 'DD.MM.YYYY'));");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -185,7 +185,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO nieobecnosci(id_ucznia,id_lekcji) values('" + studentID + "'," + lessonID + ");");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -197,7 +197,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO przeprowadzone_lekcje(data,id_prowadzacego,id_lekcji,temat_zajec) values(to_date('" + data + "', 'DD.MM.YYYY')," + teacherID + "," + lessonID + ",'" + topic + "');");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -209,7 +209,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO uczniowie(imie,nazwisko,pesel,telefon_do_rodzica,id_klasy) values('" + name + "','" + lastname + "','" + pesel + "'," + phoneNumber + "," + classID + ");");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -221,7 +221,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO klasy(oddzial,rok_rozpoczecia,id_wychowawcy) values('" + section + "'," + startYear + "," + tutorID + ");");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -233,7 +233,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO nauczyciele(imie,nazwisko) values('" + name + "','" + lastname + "');");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -245,7 +245,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO przedmioty(nazwa,id_klasy,id_prowadzacego) values('" + name + "'," + classID + "," + teacherID + ");");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -257,7 +257,7 @@ public class DBManager {
                 try {
                         stmt = c.createStatement();
                         stmt.executeUpdate("INSERT INTO plan_lekcji(id_przedmiotu,nr_lekcji,dzien_tygodnia) values(" + subjectID + "," + lessonNumber + "," + weekday + ");");
-                        System.out.println("success");
+//                        System.out.println("success");
                         stmt.close();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -340,32 +340,5 @@ public class DBManager {
 
         public static void main(String args[]) {
                 DBManager dbManager = new DBManager();
-                //te funkcje sa przetestowane wiec powinny dzialac
-                //dbManager.openConnection();
-                //dbManager.getStudentGrades("96091227824",6);
-                //dbManager.getStudentAbsences("96091227824","01.01.2014","12.12.2015");
-                //dbManager.getStudentNotes("96091227824","01.01.2014","12.12.2015");
-                //dbManager.getStudentSubjects("96091227824");
-                //dbManager.getSubjectStudents(4);
-                //dbManager.getTeacherSubjects(7);
-                //dbManager.addTeacher("kamil","pietruszka");
-                //dbManager.addStudent("kyuub","kurama","94112607253",111111111,6);
-                //dbManager.addStudentUser("kyuu","kyuu","94112607253");
-                //dbManager.addTeacherUser("pietruchacz","kamil",15)
-                //dbManager.deactivateStudent("95010881893");
-                //dbManager.addclass("d",2014,15);
-                //dbManager.addSubject("probabili",6,22);
-                //dbManager.addStudentGrade(18,"94112607253",5,6,"cokolwiek");
-                //dbManager.addScheduleLesson(6,3,4);
-                //dbManager.addCompletedLesson("28.01.2015",7,5,"gowno");
-                //dbManager.addStudentAbsence("96091227824",3);
-                //dbManager.addStudentNote("96091227824",7,"asasasas",false,"10.04.2013");
-
-                //dbManager.yearEnd();
-                //Pair p = dbManager.signIn("kyuu", "kyuu");
-               // System.out.println(p.getX().toString() + p.getY().toString());
-                //launch(args);
-
-
         }
 }

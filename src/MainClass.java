@@ -155,17 +155,28 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 System.out.println("Podaj zakres, z jakiego chcesz otrzymać nieobecności");
                 System.out.println("od: DD.MM.RRRR");
                 String dateFrom = scanner.next();
-
                 System.out.println("do: DD.MM.RRRR");
                 String dateTo = scanner.next();
-                System.out.println(dateFrom);
-                System.out.println(dateTo);
                 ArrayList<String> absences = dbManager.getStudentAbsences(user.getId(), dateFrom, dateTo);
+
+            for (String s : absences) {
+                System.out.println(s);
+            }
 
         }
 
         @Override
         public void getStudentNotes() {
+            System.out.println("Podaj zakres, z jakiego chcesz otrzymać uwagi");
+            System.out.println("od: DD.MM.RRRR");
+            String dateFrom = scanner.next();
+            System.out.println("do: DD.MM.RRRR");
+            String dateTo = scanner.next();
+            ArrayList<String> notes = dbManager.getStudentNotes(user.getId(), dateFrom, dateTo);
+
+            for (String s : notes) {
+                System.out.println(s);
+            }
 
         }
 
