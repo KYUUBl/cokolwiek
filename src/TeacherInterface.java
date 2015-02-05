@@ -10,4 +10,6 @@ public interface TeacherInterface {
         public void addStudentNote();
         public void addStudentAbsence();
         public void addCompletedLesson();
+
+        public void changeTeacherPassword();
 }

@@ -9,4 +9,6 @@ public interface AdminInterface {
         public void addUserStudent();
         public void addUserTeacher();
 
+        public void changeAdminPassword();
+
 }

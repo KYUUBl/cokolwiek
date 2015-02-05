@@ -2,19 +2,25 @@ import com.sun.org.apache.xpath.internal.SourceTree;
 import utils.AccountType;
 import utils.Pair;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import static utils.Constants.*;
 
-/**
- * Created by Kamil on 2015-02-04.
- */
+
 public class MainClass implements AdminInterface, StudentInterface, TeacherInterface {
 
         private DBManager dbManager = new DBManager();
         private Scanner scanner = new Scanner(System.in);
         private User user;
+
+        public static void main(String args[]) {
+
+                MainClass mainClass = new MainClass();
+                mainClass.initApplication();
+                System.out.println(mainClass.user.getAccountType());
+        }
 
         public void initApplication() {
                 String login;
@@ -24,6 +30,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 switch(user.getAccountType()) {
                         case ADMIN:
+                                adminMain();
                                 break;
 
                         case TEACHER:
@@ -54,18 +61,12 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         }
 
                         if(login.equals(ADMIN_LOGIN) && password.equals(ADMIN_PASSWORD)) {
-                                return new User(ADMIN_ID, AccountType.ADMIN);
+                                return new User(ADMIN_ID, AccountType.ADMIN, password);
                         }
                         System.out.println("Login lub hasło niepoprawne, proszę spróbować ponownie");
                 }
         }
 
-        public static void main (String args[]) {
-
-                MainClass mainClass = new MainClass();
-                mainClass.initApplication();
-                System.out.println(mainClass.user.getAccountType());
-        }
 
         @Override
         public void studentMain() {
@@ -76,6 +77,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                        System.out.println("[1] Wyświetl oceny");
                        System.out.println("[2] Wyświetl nieobecności");
                        System.out.println("[3] Wyświetl uwagi");
+                       System.out.println("[4] Zmień hasło");
                        int order = scanner.nextInt();
 
                        switch (order) {
@@ -88,9 +90,11 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                case 3:
                                        getStudentNotes();
                                        break;
+                               case 4:
+                                       changeStudentPassword();
                                case 0:
                                        System.out.println("goodbye");
-                                       return;
+                                       System.exit(0);
                                default:
                                        throw new RuntimeException("Wrong order");
                        }
@@ -100,8 +104,64 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         @Override
         public void adminMain() {
                 System.out.println("Zalogowano jako Admin \n Wybierz działanie:");
+                System.out.println("[0] Zakończ program");
                 System.out.println("[1] Zarządzaj bazą");
                 System.out.println("[2] Zarządzaj szkołą");
+                System.out.println("[3] Zmien haslo");
+
+                int order = scanner.nextInt();
+
+                switch (order) {
+                        case 1:
+                                manageDatabase();
+                                break;
+                        case 2:
+                                manageSchool();
+                                break;
+                        case 3:
+                                changeAdminPassword();
+                                break;
+                        case 0:
+                                System.out.println("goodbye");
+                                System.exit(0);
+                        default:
+                                throw new RuntimeException("Wrong order");
+                }
+        }
+
+        @Override
+        public void teacherMain() {
+                System.out.println("Zalogowano jako nauczyciel o ID" + user.getId() + "\n" +
+                        "Wybierz działanie:");
+
+                System.out.println("[0] Zakończ program");
+                System.out.println("[1] Dodaj ocene");
+                System.out.println("[2] Dodaj uwage");
+                System.out.println("[3] Dodaj nieobecnosc");
+                System.out.println("[4] Zmien haslo");
+                int order = scanner.nextInt();
+
+                switch (order) {
+                        case 1:
+                                addStudentGrade();
+                                break;
+                        case 2:
+                                addStudentNote();
+                                break;
+                        case 3:
+                                addStudentAbsence();
+                                break;
+                        case 4:
+                                changeTeacherPassword();
+                                break;
+                        case 0:
+                                System.out.println("goodbye");
+                                System.exit(0);
+
+                        default:
+                                throw new RuntimeException("Wrong order");
+                }
+
         }
 
         @Override
@@ -129,47 +189,68 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         }
 
         @Override
-        public void addUserStudent() { //TODO Dokonczyc ten shit
-                System.out.println("Podaj login");
+        public void addUserStudent() {
+                System.out.println("Podaj login: ");
                 String login = scanner.next();
-                System.out.println("Podaj hasło");
+                System.out.println("Podaj hasło: ");
                 String password = scanner.next();
                 System.out.println("Wybierz ucznia");
-//                dbManager.getStudents(); //TODO Dodaj tę metodę
+                ArrayList<Pair<String, String>> students = dbManager.getStudentsWithoutUser();
+                for (int i = 0; i < students.size(); i++) {
+                        System.out.println("[" + i + "] " + students.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                String studentId = students.get(order).getX();
+                dbManager.addStudentUser(login, password, studentId);
+                System.out.println("Dodano użytkownika:");
+                System.out.println("login: " + login);
+                System.out.println("haslo: " + password);
+                System.out.println("Dla ucznia: " + students.get(order).getY());
         }
 
         @Override
         public void addUserTeacher() {
-                System.out.println("Podaj login");
+                System.out.println("Podaj login: ");
                 String login = scanner.next();
-                System.out.println("Podaj hasło");
+                System.out.println("Podaj hasło: ");
                 String password = scanner.next();
-                System.out.println("Wybierz ucznia");
-//                dbManager.getTeachers() //TODO Dodaj tę metodę
+                System.out.println("Wybierz nauczyciela");
+                ArrayList<Pair<Integer, String>> students = dbManager.getTeachersWithoutUser();
+                for (int i = 0; i < students.size(); i++) {
+                        System.out.println("[" + i + "] " + students.get(i).getY());
+                }
+                int order = scanner.nextInt();
+                Integer teacherId = students.get(order).getX();
+                dbManager.addStudentUser(login, password, teacherId.toString());
+                System.out.println("Dodano użytkownika:");
+                System.out.println("login: " + login);
+                System.out.println("haslo: " + password);
+                System.out.println("Dla nauczyciela: " + students.get(order).getY());
         }
 
         @Override
-        public void teacherMain() {
-                System.out.println("Zalogowano jako nauczyciel o ID" + user.getId() + "\n" +
-                        "Wybierz działanie:");
+        public void changeAdminPassword() { //NOT WORKING YET
+                String oldPassword;
+                do {
+                        System.out.print("Podaj stare hasło: ");
+                        oldPassword = scanner.next();
+                } while (oldPassword.equals(ADMIN_PASSWORD));
 
-                System.out.println("[1] Dodaj ocene");
-                System.out.println("[2] Dodaj uwage");
-                System.out.println("[3] Dodaj nieobecnosc");
-                int order = scanner.nextInt();
-
-                switch(order) {
-                        case 1:
-                                addStudentGrade();
-                                break;
-                        case 2:
-                                addStudentNote();
-                                break;
-                        case 3:
-                                addStudentAbsence();
-                                break;
-                        default:
-                                throw new RuntimeException("Wrong order");
+                System.out.print("Podaj nowe hasło: ");
+                String newPassword = scanner.next();
+                try {
+                        Class Constants = Class.forName("utils.Constants");
+                        try {
+                                Field AdminPassword = Constants.getDeclaredField(ADMIN_PASSWORD);
+                                AdminPassword.set(this, newPassword);
+                                System.out.println(ADMIN_PASSWORD);
+                        } catch (NoSuchFieldException e) {
+                                e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                        }
+                } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
                 }
 
         }
@@ -223,6 +304,33 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         }
 
+        @Override
+        public void changeStudentPassword() {
+                while (true) {
+                        System.out.println("Podaj stare haslo: ");
+                        String oldPassword = scanner.next();
+                        System.out.println("login: " + user.getId());
+                        System.out.println("haslo: " + oldPassword);
+
+                        if (user.getPassword().equals(oldPassword)) {
+                                break;
+                        } else {
+                                System.out.println("Podane hasło jest niepoprawne, spróbuj ponownie");
+                        }
+                }
+                String newPassword, newPassword1;
+                do {
+                        System.out.println("Podaj nowe hasło: ");
+                        newPassword = scanner.next();
+
+                        System.out.println("Zatwierdz nowe hasło: ");
+                        newPassword1 = scanner.next();
+                } while (!newPassword.equals(newPassword1) && newPassword != null);
+
+                dbManager.changeStudentPassword(user.getId(), newPassword);
+                user.setPassword(newPassword);
+                System.out.println("Hasło zostało zmienione");
+        }
 
         @Override
         public void getTeacherSubject() {
@@ -265,6 +373,11 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         @Override
         public void addCompletedLesson() {
+
+        }
+
+        @Override
+        public void changeTeacherPassword() {
 
         }
 
