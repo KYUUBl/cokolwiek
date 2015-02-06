@@ -61,9 +61,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 return dbManager.signIn(login, password);
                         }
 
-                        if (login.equals(ADMIN_LOGIN) && password.equals(ADMIN_PASSWORD)) {
+/*                        if (login.equals(ADMIN_LOGIN) && password.equals(ADMIN_PASSWORD)) {
                                 return new User(ADMIN_ID, AccountType.ADMIN, password);
-                        }
+                        }*/
                         System.out.println("Login lub hasło niepoprawne, proszę spróbować ponownie");
                 }
         }
@@ -574,30 +574,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 manageSchool();
         }
 
-        @Override
+        @Override //TODO FINISH THIS SHIT
         public void changeAdminPassword() {
-                String oldPassword;
-                do {
-                        System.out.print("Podaj stare hasło: ");
-                        oldPassword = scanner.next();
-                } while (!oldPassword.equals(ADMIN_PASSWORD));
 
-                System.out.print("Podaj nowe hasło: ");
-                String newPassword = scanner.next();
-                try {
-                        Class Constants = Class.forName("utils.Constants");
-                        try {
-                                Field AdminPassword = Constants.getDeclaredField("ADMIN_PASSWORD"); //NoSuchFieldException
-                                AdminPassword.set(this, newPassword);
-                                System.out.println(ADMIN_PASSWORD);
-                        } catch (NoSuchFieldException e) {
-                                e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                        }
-                } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                }
         }
 
         @Override
