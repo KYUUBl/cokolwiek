@@ -354,16 +354,20 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 adminMain();
         }
 
-        @Override //TODO Nie da się wyjść z pętli, jakieś wyjście?
+        @Override 
         public void manageDatabase() {
                 while (true) {
-                        System.out.println("Dodaj nowego użytkownika:");
+                        System.out.println("Wybierz działanie:");
+                        System.out.println("[0] Wycofaj do głównego menu");
                         System.out.println("[1] Dodaj konto ucznia");
                         System.out.println("[2] Dodaj konto nauczyciela");
 
                         int order = scanner.nextInt();
 
                         switch (order) {
+                                case 0:
+                                        adminMain();
+                                        break;
                                 case 1:
                                         addUserStudent();
                                         break;
@@ -377,7 +381,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 }
         }
 
-        @Override //TODO Nie da się wyjść z pętli, jakieś wyjście?
+        @Override 
         public void manageSchool() {
                 while (true) {
                         System.out.println("Wybierz działanie:");
