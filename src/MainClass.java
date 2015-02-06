@@ -161,7 +161,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         System.out.println("[2] Wyświetl nieobecności");
                         System.out.println("[3] Wyświetl uwagi");
                         System.out.println("[4] Wyświetl plan lekcji");
-                        System.out.println("[5] Zmień hasło");
+                        //System.out.println("[5] Zmień hasło");
                         int order = scanner.nextInt();
 
                         switch (order) {
@@ -177,9 +177,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 case 4:
                                         getStudentSchedule();
                                         break;
-                                case 5:
-                                        changeStudentPassword();
-                                        break;
+                                //case 5:
+                                //        changeStudentPassword();
+                                //        break;
                                 case 0:
                                         System.out.println("goodbye");
                                         System.exit(0);
@@ -197,25 +197,37 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         @Override
         public void getStudentGrades() {
                 ArrayList<Pair<Integer, String>> subjects = dbManager.getStudentSubjects(user.getId());
+                if (subjects == null) {
+                        System.out.println("Brak przedmiotów");
+                        studentMain();
+                }
                 int order = orderFromList(subjects);
                 assert (order != -1);
                 int subject = subjects.get(order).getX();
 
                 ArrayList<String> grades = dbManager.getStudentGrades(user.getId(), subject);
-                for (String grade : grades) {
-                        System.out.println(grade);
+                if (grades == null) System.out.println("Brak ocen");
+                else {
+                        for (String grade : grades) {
+                                System.out.println(grade);
+                        }
                 }
                 studentMain();
         }
 
-        @Override
+        @Override //TODO CHCE CZEKAC NA ENTER!!!
         public void getStudentSchedule() {
                 ArrayList<ArrayList<String>> schedule = dbManager.getLessonShedule(user.getId());
-                System.out.printf("%-4s %-20s %-20s %-20s %-20s %s", " ", "PONIEDZIALEK", "WTOREK", "SRODA", "CZWARTEK", "PIATEK\n");
-                for (int j = 0; j < 10; j++) {
-                        System.out.printf("%-4d %-20s %-20s %-20s %-20s %s", j, schedule.get(0).get(j), schedule.get(1).get(j), schedule.get(2).get(j), schedule.get(3).get(j), schedule.get(4).get(j) + "\n");
+                if (schedule == null) {
+                        System.out.println("Brak planu zajęć");
+                        studentMain();
+                } else {
+                        System.out.printf("%-4s %-20s %-20s %-20s %-20s %s", " ", "PONIEDZIALEK", "WTOREK", "SRODA", "CZWARTEK", "PIATEK\n");
+                        for (int j = 0; j < 10; j++) {
+                                System.out.printf("%-4d %-20s %-20s %-20s %-20s %s", j, schedule.get(0).get(j), schedule.get(1).get(j), schedule.get(2).get(j), schedule.get(3).get(j), schedule.get(4).get(j) + "\n");
+                        }
+                        System.out.println("Naciśnij enter, by kontynować");
                 }
-                System.out.println("Naciśnij enter, by kontynować");
                 studentMain();
         }
 
@@ -263,9 +275,13 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         System.out.println("podaj poprawna date!");
                 }
                 ArrayList<String> notes = dbManager.getStudentNotes(user.getId(), dateFrom, dateTo);
-
-                for (String s : notes) {
-                        System.out.println(s);
+                if (notes == null) {
+                        System.out.println("Brak uwag");
+                        studentMain();
+                } else {
+                        for (String s : notes) {
+                                System.out.println(s);
+                        }
                 }
                 studentMain();
         }
@@ -348,18 +364,23 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
         public void seeStudents() {
                 ArrayList<Pair<String, String>> students = dbManager.getAllStudentsByAdmin();
-                for (Pair<String, String> student : students) {
-                        System.out.println(student.getY());
+                if (students == null) {
+                        System.out.println("Brak uczniów do wyświetlenia");
+                } else {
+                        for (Pair<String, String> student : students) {
+                                System.out.println(student.getY());
+                        }
                 }
                 adminMain();
         }
 
-        @Override 
+        @Override
         public void manageDatabase() {
                 while (true) {
                         System.out.println("Wybierz działanie:");
                         System.out.println("[0] Wycofaj do głównego menu");
                         System.out.println("[1] Dodaj konto ucznia");
+                        System.out.println("[2] Dodaj konto nauczyciela");
                         System.out.println("[2] Dodaj konto nauczyciela");
 
                         int order = scanner.nextInt();
@@ -381,7 +402,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 }
         }
 
-        @Override 
+        @Override
         public void manageSchool() {
                 while (true) {
                         System.out.println("Wybierz działanie:");
@@ -435,16 +456,20 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
 
                 ArrayList<Pair<String, String>> students = dbManager.getStudentsWithoutUser();
-                int order = orderFromList1(students);
-                String studentId = students.get(order).getX();
-                boolean result = dbManager.addStudentUser(login, password, studentId);
-                if (result) {
-                        System.out.println("Dodano użytkownika:");
-                        System.out.println("login: " + login);
-                        System.out.println("haslo: " + password);
-                        System.out.println("Dla ucznia: " + students.get(order).getY());
+                if (students == null) {
+                        System.out.println("Brak studentów bez konta użytkownika");
                 } else {
-                        System.out.println("Nie udało się dodać ucznia");
+                        int order = orderFromList1(students);
+                        String studentId = students.get(order).getX();
+                        boolean result = dbManager.addStudentUser(login, password, studentId);
+                        if (result) {
+                                System.out.println("Dodano użytkownika:");
+                                System.out.println("login: " + login);
+                                System.out.println("haslo: " + password);
+                                System.out.println("Dla ucznia: " + students.get(order).getY());
+                        } else {
+                                System.out.println("Nie udało się dodać ucznia");
+                        }
                 }
 
                 manageDatabase();
@@ -460,16 +485,20 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
 
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getTeachersWithoutUser();
-                int order = orderFromList(teachers);
-                Integer teacherId = teachers.get(order).getX();
-                boolean result = dbManager.addTeacherUser(login, password, teacherId); //TU SIĘ MOŻE JEBAC
-                if (result) {
-                        System.out.println("Dodano użytkownika:");
-                        System.out.println("login: " + login);
-                        System.out.println("haslo: " + password);
-                        System.out.println("Dla nauczyciela: " + teachers.get(order).getY());
+                if (teachers == null) {
+                        System.out.println("Brak nauczyciela bez konta w systemie");
                 } else {
-                        System.out.println("Nie udało się dodać użytkownika");
+                        int order = orderFromList(teachers);
+                        Integer teacherId = teachers.get(order).getX();
+                        boolean result = dbManager.addTeacherUser(login, password, teacherId); //TU SIĘ MOŻE JEBAC
+                        if (result) {
+                                System.out.println("Dodano użytkownika:");
+                                System.out.println("login: " + login);
+                                System.out.println("haslo: " + password);
+                                System.out.println("Dla nauczyciela: " + teachers.get(order).getY());
+                        } else {
+                                System.out.println("Nie udało się dodać użytkownika");
+                        }
                 }
                 manageDatabase();
         }
@@ -486,12 +515,16 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 int phoneNumber = scanner.nextInt();
 
                 ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
-                System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
-                int order = orderFromList(classes);
-                int classID = classes.get(order).getX();
-                boolean result = dbManager.addStudent(name, lastname, pesel, phoneNumber, classID);
-                if (result) System.out.println("Pomyslnie dodano ucznia");
-                else System.out.println("Nie udało się dodać ucznia");
+                if (classes == null) {
+                        System.out.println("Brak uwag");
+                } else {
+                        System.out.println("Wybierz klasę, do której chcesz dodać ucznia: ");
+                        int order = orderFromList(classes);
+                        int classID = classes.get(order).getX();
+                        boolean result = dbManager.addStudent(name, lastname, pesel, phoneNumber, classID);
+                        if (result) System.out.println("Pomyslnie dodano ucznia");
+                        else System.out.println("Nie udało się dodać ucznia");
+                }
                 manageSchool();
 
         }
@@ -500,11 +533,15 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void deactivateStudent() {
                 System.out.println("Wybierz ucznia, którech chcesz deaktywować");
                 ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
-                int order = orderFromList1(students);
-                String userID = students.get(order).getX();
-                boolean result = dbManager.deactivateStudent(userID);
-                if (result) System.out.println("Pomyślnie deaktywowano studenta");
-                else System.out.println("Nie udało się deaktywować studenta");
+                if (students == null) {
+                        System.out.println("Brak uczniów do wyświetlenia");
+                } else {
+                        int order = orderFromList1(students);
+                        String userID = students.get(order).getX();
+                        boolean result = dbManager.deactivateStudent(userID);
+                        if (result) System.out.println("Pomyślnie deaktywowano studenta");
+                        else System.out.println("Nie udało się deaktywować studenta");
+                }
                 manageSchool();
         }
 
@@ -567,15 +604,19 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void addClass() {
                 System.out.println("Wybierz nauczyciela, który będzie wychowawcą");
                 ArrayList<Pair<Integer, String>> teachers = dbManager.getTeachersWithoutClass();
-                int order = orderFromList(teachers);
-                int tutorId = teachers.get(order).getX();
-                System.out.println("Podaj oddział");
-                String section = scanner.next();
-                System.out.println("Podaj rocznik rozpoczęcia");
-                int startYear = scanner.nextInt();
-                boolean result = dbManager.addclass(section, startYear, tutorId);
-                if (result) System.out.println("Pomyślnie dodano klasę");
-                else System.out.println("Nie udało się dodać klasy");
+                if (teachers == null) {
+                        System.out.println("Brak nauczyciela bez wychowawstwa");
+                } else {
+                        int order = orderFromList(teachers);
+                        int tutorId = teachers.get(order).getX();
+                        System.out.println("Podaj oddział");
+                        String section = scanner.next();
+                        System.out.println("Podaj rocznik rozpoczęcia");
+                        int startYear = scanner.nextInt();
+                        boolean result = dbManager.addclass(section, startYear, tutorId);
+                        if (result) System.out.println("Pomyślnie dodano klasę");
+                        else System.out.println("Nie udało się dodać klasy");
+                }
                 manageSchool();
         }
 
@@ -586,18 +627,22 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 System.out.println("Wybierz klasę:");
                 ArrayList<Pair<Integer, String>> classes = dbManager.getAllClasses();
-                int order = orderFromList(classes);
-                int classID = classes.get(order).getX();
+                if (classes == null) {
+                        System.out.println("Brak nauczyciela bez konta w systemie");
+                } else {
+                        int order = orderFromList(classes);
+                        int classID = classes.get(order).getX();
 
-                System.out.println("Wybierz nauczyciela przypisanego do przedmiotu");
+                        System.out.println("Wybierz nauczyciela przypisanego do przedmiotu");
 
-                ArrayList<Pair<Integer, String>> teachers = dbManager.getAllTeachers();
-                order = orderFromList(teachers);
-                int teacherID = classes.get(order).getX();
+                        ArrayList<Pair<Integer, String>> teachers = dbManager.getAllTeachers();
+                        order = orderFromList(teachers);
+                        int teacherID = classes.get(order).getX();
 
-                boolean result = dbManager.addSubject(name, classID, teacherID);
-                if (result) System.out.println("Pomyślnie dodano przedmiot");
-                else System.out.println("Nie udało się dodać przedmiotu");
+                        boolean result = dbManager.addSubject(name, classID, teacherID);
+                        if (result) System.out.println("Pomyślnie dodano przedmiot");
+                        else System.out.println("Nie udało się dodać przedmiotu");
+                }
                 manageSchool();
         }
 
@@ -653,24 +698,42 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
         public void addStudentGrade() {
                 System.out.println("Wybierz przedmiot, z którego chcesz dodać ocenę");
                 ArrayList<Pair<Integer, String>> subjects = dbManager.getTeacherSubjects(Integer.parseInt(user.getId()));
-                int order = orderFromList(subjects);
-                int subjectId = subjects.get(order).getX();
-                ArrayList<Pair<String, String>> studentsBySubject = dbManager.getSubjectStudents(subjectId);
-                for (int i = 0; i < studentsBySubject.size(); i++) {
-                        System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
+                if (subjects == null) {
+                        System.out.println("Brak przedmiotów do wyświetlenia");
+                } else {
+                        int order = orderFromList(subjects);
+                        int subjectId = subjects.get(order).getX();
+                        ArrayList<Pair<String, String>> studentsBySubject = dbManager.getSubjectStudents(subjectId);
+                        if (studentsBySubject == null) {
+                                System.out.println("Brak lekcji dla których możesz wystawić ocenę");
+                        } else {
+
+                                for (int i = 0; i < studentsBySubject.size(); i++) {
+                                        System.out.println("[" + i + "] " + studentsBySubject.get(i).getY());
+                                }
+                                if (studentsBySubject == null) {
+                                        System.out.println("Brak uczniów uczęszczających na te zajęcia");
+                                } else {
+                                        order = orderFromList1(studentsBySubject);
+                                        String studentId = studentsBySubject.get(order).getX();
+                                        ArrayList<Pair<Integer, String>> activities = dbManager.getActivities();
+                                        if (activities == null) {
+                                                System.out.println("Brak aktywności do wyboru");
+                                        } else {
+                                                order = orderFromList(activities);
+                                                int activityId = activities.get(order).getX();
+                                                System.out.println("podaj wartosc oceny");
+                                                int value = scanner.nextInt();
+                                                System.out.println("podaj temat");
+                                                String topic = scanner.next();
+                                                boolean result = dbManager.addStudentGrade(subjectId, studentId, value, activityId, topic);
+                                                if (result) System.out.println("Pomyślnie dodano ocenę");
+                                                else System.out.println("Nie udało się dodać oceny");
+                                        }
+                                }
+                        }
                 }
-                order = orderFromList1(studentsBySubject);
-                String studentId = studentsBySubject.get(order).getX();
-                ArrayList<Pair<Integer, String>> activities = dbManager.getActivities();
-                order = orderFromList(activities);
-                int activityId = activities.get(order).getX();
-                System.out.println("podaj wartosc oceny");
-                int value = scanner.nextInt();
-                System.out.println("podaj temat");
-                String topic = scanner.next();
-                boolean result = dbManager.addStudentGrade(subjectId, studentId, value, activityId, topic);
-                if (result) System.out.println("Pomyślnie dodano ocenę");
-                else System.out.println("Nie udało się dodać oceny");
+
 
                 teacherMain();
         }
@@ -681,23 +744,27 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
 
                 System.out.println("Wybierz ucznia, któremu chcesz wystawić uwagę");
                 ArrayList<Pair<String, String>> students = dbManager.getAllStudents();
-                int order = orderFromList1(students);
-                String studentID = students.get(order).getX();
+                if (students == null) {
+                        System.out.println("Brak studentów w systemie");
+                } else {
+                        int order = orderFromList1(students);
+                        String studentID = students.get(order).getX();
 
-                System.out.println("Podaj treść uwagi i zatwierdź ENTEREM:");
-                String note = scanner.nextLine();
+                        System.out.println("Podaj treść uwagi i zatwierdź ENTEREM:");
+                        String note = scanner.nextLine();
 
-                System.out.println("Czy uwaga jest pozytywna? ");
-                System.out.println("[1] TAK");
-                System.out.println("[0] NIE");
-                int orderForPositive = scanner.nextInt(); //TUTAJ UWAGA Z BOOLEANEM
-                boolean isPositive = orderForPositive == 1;
-                System.out.println("Podaj datę wystawienia");
-                String date = scanner.next();
+                        System.out.println("Czy uwaga jest pozytywna? ");
+                        System.out.println("[1] TAK");
+                        System.out.println("[0] NIE");
+                        int orderForPositive = scanner.nextInt(); //TUTAJ UWAGA Z BOOLEANEM
+                        boolean isPositive = orderForPositive == 1;
+                        System.out.println("Podaj datę wystawienia");
+                        String date = scanner.next();
 
-                boolean result = dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date); //TU SIĘ MOŻE JEBAC
-                if (result) System.out.println("Dodano uwagę");
-                else System.out.println("Nie udało się dodać uwagi");
+                        boolean result = dbManager.addStudentNote(studentID, Integer.parseInt(user.getId()), note, isPositive, date); //TU SIĘ MOŻE JEBAC
+                        if (result) System.out.println("Dodano uwagę");
+                        else System.out.println("Nie udało się dodać uwagi");
+                }
                 teacherMain();
         }
 
@@ -707,31 +774,43 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                 String data = scanner.next();
                 System.out.println("Wybierz lekcje z podzialu godzin ktora przeprowadziles");
                 ArrayList<Pair<Integer, String>> lessons = dbManager.getLessonsByDate(data);
-                int order = orderFromList(lessons);
-                int lessonID = lessons.get(order).getX();
-                System.out.println("Podaj temat lekcji");
-                String topic = scanner.next();
-                int lID = dbManager.addCompletedLesson(data, Integer.parseInt(user.getId()), lessonID, topic);
-                ArrayList<Pair<String, String>> students = dbManager.getStudentsByLesson(lID);
-                System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
-                order = orderFromList1(students);
-                while (order >= 0) {
-                        boolean result = dbManager.addStudentAbsence(students.get(order).getX(), lID);
-                        if (result) System.out.println("Dodano nieobecność");
-                        else System.out.println("Nie udało się dodać nieobecności");
-                        order = scanner.nextInt();
+                if (lessons == null) {
+                        System.out.println("Brak lekcji do wyświetlenia");
+                } else {
+                        int order = orderFromList(lessons);
+                        int lessonID = lessons.get(order).getX();
+                        System.out.println("Podaj temat lekcji");
+                        String topic = scanner.next();
+                        int lID = dbManager.addCompletedLesson(data, Integer.parseInt(user.getId()), lessonID, topic);
+                        ArrayList<Pair<String, String>> students = dbManager.getStudentsByLesson(lID);
+                        if (students == null) {
+                                System.out.println("Brak przeprowadzonych lekcji");
+                        } else {
+                                System.out.println("Podaj nieobecnych uczniow:([-1] zakoncz podawanie nieobecnych)");
+                                order = orderFromList1(students);
+                                while (order >= 0) {
+                                        boolean result = dbManager.addStudentAbsence(students.get(order).getX(), lID);
+                                        if (result) System.out.println("Dodano nieobecność");
+                                        else System.out.println("Nie udało się dodać nieobecności");
+                                        order = scanner.nextInt();
+                                }
+                        }
                 }
                 teacherMain();
         }
 
         @Override
         public void getTeacherSchedule() {
-                ArrayList<ArrayList<String>> shedule = dbManager.getTeacherSchedule(Integer.parseInt(user.getId()));
-                System.out.printf("%-4s %-20s %-20s %-20s %-20s %s", " ", "PONIEDZIALEK", "WTOREK", "SRODA", "CZWARTEK", "PIATEK\n");
-                for (int j = 0; j < 10; j++) {
-                        System.out.printf("%-4d %-25s %-25s %-25s %-25s %s", j, shedule.get(0).get(j), shedule.get(1).get(j), shedule.get(2).get(j), shedule.get(3).get(j), shedule.get(4).get(j) + "\n");
+                ArrayList<ArrayList<String>> schedule = dbManager.getTeacherSchedule(Integer.parseInt(user.getId()));
+                if (schedule == null) {
+                        System.out.println("Brak podziału godzin do wyświetlenia");
+                } else {
+                        System.out.printf("%-4s %-20s %-20s %-20s %-20s %s", " ", "PONIEDZIALEK", "WTOREK", "SRODA", "CZWARTEK", "PIATEK\n");
+                        for (int j = 0; j < 10; j++) {
+                                System.out.printf("%-4d %-25s %-25s %-25s %-25s %s", j, schedule.get(0).get(j), schedule.get(1).get(j), schedule.get(2).get(j), schedule.get(3).get(j), schedule.get(4).get(j) + "\n");
+                        }
+                        System.out.println("Naciśnij enter, by kontynować");
                 }
-                System.out.println("Naciśnij enter, by kontynować");
                 teacherMain();
         }
 
