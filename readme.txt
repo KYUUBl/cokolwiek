@@ -6,7 +6,7 @@ Dyrektor moze dodawaæ uzytkownikow dla istniejacych uczniow/nauczycieli, dodawac
 
 Wymagania:
 -Java 8,
--PostgreSQL JDBC Driver for Java 8 (biblioteka musi siê znaleŸæ w folderze lib)
+-PostgreSQL JDBC Driver for Java 8
 https://jdbc.postgresql.org/download/postgresql-9.4-1200.jdbc41.jar
 
 Jak postawiæ:
