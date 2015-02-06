@@ -161,7 +161,7 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                         System.out.println("[2] Wyświetl nieobecności");
                         System.out.println("[3] Wyświetl uwagi");
                         System.out.println("[4] Wyświetl plan lekcji");
-                        System.out.println("[5] Zmień hasło");
+                        //System.out.println("[5] Zmień hasło");
                         int order = scanner.nextInt();
 
                         switch (order) {
@@ -177,9 +177,9 @@ public class MainClass implements AdminInterface, StudentInterface, TeacherInter
                                 case 4:
                                         getStudentSchedule();
                                         break;
-                                case 5:
-                                        changeStudentPassword();
-                                        break;
+                                //case 5:
+                                //        changeStudentPassword();
+                                //        break;
                                 case 0:
                                         System.out.println("goodbye");
                                         System.exit(0);
