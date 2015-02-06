@@ -224,7 +224,8 @@ INSERT INTO rodzaje_aktywnosci (nazwa, waga) VALUES
  ('wypracowanie', 4);
 
 INSERT INTO uzytkownicy(login,haslo) VALUES
- ('kamil','kamil'),
+('admin','admin'), 
+('kamil','kamil'),
  ('qwerty','ytrewq'),
  ('6FWV6AXO4'	,'99GDQ5OMQA618'),
 ('FSC20G68OWARXF8AG6'	,'N5LDRDS0S3R'),

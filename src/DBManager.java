@@ -346,6 +346,15 @@ public class DBManager {
 
         public User signIn(String login, String password) {
                 try {
+                        if(login.equals("admin")){
+                            PreparedStatement ps = c.prepareStatement("SELECT * from uzytkownicy login=id_uzytkownika where login=?;");
+                            ps.setString(1, login);
+                            ResultSet rs = ps.executeQuery();
+                            rs.next();
+                            String pass = rs.getString("haslo");
+                            if (!password.equals(pass)) return null;
+                            return new User("admin", AccountType.ADMIN, pass);
+                        }
                         PreparedStatement ps = c.prepareStatement("SELECT * from uzytkownicy join uczniowie on login=id_uzytkownika where login=?;");
                         ps.setString(1, login);
                         ResultSet rs = ps.executeQuery();
@@ -639,6 +648,7 @@ public class DBManager {
                 } catch (Exception e) {
                         return null;
                 }
+
                 return shedule;
         }
 }
