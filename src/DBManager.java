@@ -347,7 +347,7 @@ public class DBManager {
         public User signIn(String login, String password) {
                 try {
                         if(login.equals("admin")){
-                            PreparedStatement ps = c.prepareStatement("SELECT * from uzytkownicy login=id_uzytkownika where login=?;");
+                            PreparedStatement ps = c.prepareStatement("SELECT * from uzytkownicy where login=?;");
                             ps.setString(1, login);
                             ResultSet rs = ps.executeQuery();
                             rs.next();
@@ -482,6 +482,17 @@ public class DBManager {
                 } catch (Exception e) {
                         return false;
                 }
+        }
+        public boolean changeAdminPassword(String password) {
+            try {
+                PreparedStatement ps = c.prepareStatement("UPDATE uzytkownicy SET haslo = ? where login='admin';");
+                ps.setString(1, password);
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
 
         public ArrayList<Pair<Integer, String>> getActivities() {
