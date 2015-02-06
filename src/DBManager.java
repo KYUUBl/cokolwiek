@@ -1,5 +1,4 @@
-import utils.AccountType;
-import utils.Pair;
+import utils.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,8 +11,8 @@ public class DBManager {
                 try {
                         Class.forName("org.postgresql.Driver");
                         c = DriverManager
-                                .getConnection("jdbc:postgresql://localhost:5432/School register",
-                                        "postgres", "kamil");
+                                .getConnection(Constants.DB_ADRESS,
+                                        Constants.LOGIN, Constants.PASSWORD);
 
                 } catch (Exception e) {
                         e.printStackTrace();
